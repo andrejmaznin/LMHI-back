@@ -1,7 +1,7 @@
 from flask import jsonify, request
 from flask_restful import Resource, abort
-import db_session
-from users import User
+from data import db_session
+from data.users import User
 import hashlib
 
 
@@ -14,13 +14,14 @@ class UsersResource(Resource):
                 name=payload['name'],
                 hashed_password=payload["hashed_password"],
                 email=payload['email'],
-                info=payload['info'],
-            )
+                info=payload['info'])
+
             session.add(user)
             session.commit()
             response = jsonify({'success': 'OK'})
             response.status_code = 201
             return response
+
         else:
             response = jsonify({'ERROR': 'USER ALREADY EXISTS'})
             response.status_code = 400
