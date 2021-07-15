@@ -6,15 +6,18 @@ import hashlib
 
 
 class UsersResource(Resource):
-    def post(self):
+    @staticmethod
+    def post():
         payload = request.json()
         session = db_session.create_session()
+
         if not session.query(User).filter(User.email == payload['email']).all():
             user = User(
                 name=payload['name'],
                 hashed_password=payload["hashed_password"],
                 email=payload['email'],
-                info=payload['info'])
+                info=payload['info']
+            )
 
             session.add(user)
             session.commit()
