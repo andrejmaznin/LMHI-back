@@ -6,7 +6,8 @@ import hashlib
 
 
 class UsersResource(Resource):
-    def post(self):
+    @staticmethod
+    def post():
         payload = request.json()
         session = db_session.create_session()
         if not session.query(User).filter(User.email == payload['email']).all():
@@ -26,3 +27,7 @@ class UsersResource(Resource):
             response = jsonify({'ERROR': 'USER ALREADY EXISTS'})
             response.status_code = 400
             return response
+
+    @staticmethod
+    def patch():
+        pass
