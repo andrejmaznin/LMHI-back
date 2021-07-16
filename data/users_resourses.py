@@ -1,7 +1,7 @@
 from flask import jsonify, request
 from flask_restful import Resource, abort
-from data import db_session
-from data.users import User
+import db_session
+from users import User
 import hashlib
 
 
@@ -29,5 +29,21 @@ class UsersResource(Resource):
             return response
 
     @staticmethod
-    def patch():
-        pass
+    def patch(user_id):
+        payload = request.json()
+        session = db_session.create_session()
+        current_user = session.query(User).get(user_id)
+        if current_user:
+            if not session.query(User).filter_by(email=payload["email"]):
+                session.query(User).filter_by(id=user_id).update(payload)
+                session.commit()
+
+            else:
+                response = jsonify({'ERROR': 'EMAIL TAKEN'})
+                response.status_code = 400
+                return response
+
+        else:
+            response = jsonify({'ERROR': 'USER NOT FOUND'})
+            response.status_code = 404
+            return response
