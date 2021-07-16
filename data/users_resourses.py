@@ -20,8 +20,10 @@ class UsersResource(Resource):
             )
 
             session.add(user)
+            user_id = session.query(User).filter_by(
+                email=payload["email"]).id  # получаем id созданного пользователя, чтобы сообщить его в ответе
             session.commit()
-            response = jsonify({'success': 'OK'})
+            response = jsonify({'success': 'OK', "id": user_id})
             response.status_code = 201
             return response
 
@@ -31,20 +33,23 @@ class UsersResource(Resource):
             return response
 
     @staticmethod
-    def patch(user_id):
+    def patch():
         payload = request.json()
         session = db_session.create_session()
+
+        data = payload["data"]  # все, что нужно изменить
+        user_id = payload["id"]
         current_user = session.query(User).get(user_id)
+
         if current_user:
-            if not session.query(User).filter_by(email=payload["email"]):
-                session.query(User).filter_by(id=user_id).update(payload)
-                session.commit()
+            if "email" in data.keys():  # email уникальный, поэтому на уже зарегистрированный изменить нельзя
+                if session.query(User).filter_by(email=data["email"]):
+                    response = jsonify({'ERROR': 'EMAIL TAKEN'})
+                    response.status_code = 400
+                    return response
 
-            else:
-                response = jsonify({'ERROR': 'EMAIL TAKEN'})
-                response.status_code = 400
-                return response
-
+            session.query(User).filter_by(id=user_id).update(data)
+            session.commit()
         else:
             response = jsonify({'ERROR': 'USER NOT FOUND'})
             response.status_code = 404

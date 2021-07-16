@@ -10,7 +10,6 @@ api = Api(app)
 def main():
     db_session.global_init("lmhi")
     api.add_resource(UsersResource, '/users')
-
     app.run()
 
 
