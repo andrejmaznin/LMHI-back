@@ -10,6 +10,6 @@ class MoodDairy(SqlAlchemyBase):
     user_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("users.id"))
     user = orm.relation('User')
     scale_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("mood_diary_scales.id"))
-    scale = orm.relation('Scale')
+    scale = orm.relation('MoodDairyScale')
     date = sqlalchemy.Column(sqlalchemy.DateTime, nullable=False)
     value = sqlalchemy.Column(sqlalchemy.Integer, nullable=False)
