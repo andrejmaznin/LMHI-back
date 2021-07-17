@@ -3,9 +3,8 @@ import sqlalchemy.orm as orm
 from sqlalchemy.orm import Session
 import sqlalchemy.ext.declarative as dec
 
-SqlAlchemyBase = dec.declarative_base()
-
 __factory = None
+SqlAlchemyBase = dec.declarative_base()
 
 
 def global_init(db_file):
@@ -17,7 +16,7 @@ def global_init(db_file):
     if not db_file or not db_file.strip():
         raise Exception("Необходимо указать файл базы данных.")
 
-    conn_str = f'postgresql://postgres:newPassword@localhost:5432/{db_file.strip()}'
+    conn_str = f'postgresql://postgres:newPassword@25.78.29.199:5432/{db_file.strip()}'
     print(f"Подключение к базе данных по адресу {conn_str}")
 
     engine = sa.create_engine(conn_str, echo=False)
