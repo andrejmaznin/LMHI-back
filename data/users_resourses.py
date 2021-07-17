@@ -1,14 +1,13 @@
+from data import db_session
+from data.users import User
 from flask import jsonify, request
-from flask_restful import Resource, abort
-import db_session
-from users import User
-import hashlib
+from flask_restful import Resource
 
 
 class UsersResource(Resource):
     @staticmethod
     def post():
-        payload = request.json()
+        """        payload = request.json()
         session = db_session.create_session()
 
         if not session.query(User).filter(User.email == payload['email']).all():
@@ -30,7 +29,16 @@ class UsersResource(Resource):
         else:
             response = jsonify({'ERROR': 'USER ALREADY EXISTS'})
             response.status_code = 400
-            return response
+            return response"""
+        response = jsonify({'success': 'OK'})
+        response.status_code = 201
+        return response
+
+    @staticmethod
+    def get():
+        response = jsonify({'success': 'OK'})
+        response.status_code = 201
+        return response
 
     @staticmethod
     def patch():
