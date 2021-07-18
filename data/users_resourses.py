@@ -9,7 +9,6 @@ class UsersResource(Resource):
     def post():
         """        payload = request.get_json()
         session = db_session.create_session()
-
         if not session.query(User).filter(User.email == payload['email']).all():
             user = User(
                 name=payload['name'],
@@ -17,7 +16,6 @@ class UsersResource(Resource):
                 email=payload['email'],
                 info=payload['info']
             )
-
             session.add(user)
             user_id = session.query(User).filter_by(
                 email=payload["email"]).one().id  # получаем id созданного пользователя, чтобы сообщить его в ответе
@@ -25,7 +23,6 @@ class UsersResource(Resource):
             response = jsonify({'success': 'OK', "id": user_id})
             response.status_code = 201
             return response
-
         else:
             response = jsonify({'ERROR': 'USER ALREADY EXISTS'})
             response.status_code = 400
