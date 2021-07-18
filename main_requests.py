@@ -8,9 +8,9 @@ api = Api(app)
 
 
 def main():
-    db_session.global_init("lmhi")
+    #db_session.global_init("lmhi")
     api.add_resource(UsersResource, '/users')
-    app.run(host="25.19.108.155", port=8080)
+    app.run()
 
 
 if __name__ == '__main__':
