@@ -8,12 +8,16 @@ import traceback
 class MoodScaleResource(Resource):
     @staticmethod
     def post():
-        payload = request.json()
+        payload = request.get_json()
         session = db_session.create_session()
         try:
             scale = MoodScale(name=payload['name'])
             session.add(scale)
             session.commit()
+            scale_id = session.query(MoodScale).filter_by(name=payload['name']).one().id
+            response = jsonify({'SUCCES': 'OK', 'id': scale_id})
+            response.status_code = 201
+            return response
 
         except Exception as error:
             response = jsonify({"ERROR": traceback.format_exc(error)})
@@ -22,10 +26,10 @@ class MoodScaleResource(Resource):
 
     @staticmethod
     def get():
-        payload = request.json()
         session = db_session.create_session()
         try:
-            scales = session.query(MoodScale).all()
+            scales = [scale.as_dict() for scale in session.query(MoodScale).all()]
+            print(scales)
             response = jsonify({'SUCCES': 'OK', 'scales': scales})
             response.status_code = 201
             return response
