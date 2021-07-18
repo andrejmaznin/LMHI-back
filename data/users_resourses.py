@@ -20,7 +20,7 @@ class UsersResource(Resource):
 
             session.add(user)
             user_id = session.query(User).filter_by(
-                email=payload["email"]).one().id # получаем id созданного пользователя, чтобы сообщить его в ответе
+                email=payload["email"]).one().id  # получаем id созданного пользователя, чтобы сообщить его в ответе
             session.commit()
             response = jsonify({'success': 'OK', "id": user_id})
             response.status_code = 201
@@ -30,9 +30,6 @@ class UsersResource(Resource):
             response = jsonify({'ERROR': 'USER ALREADY EXISTS'})
             response.status_code = 400
             return response
-        response = jsonify({'success': 'OK'})
-        response.status_code = 201
-        return response
 
     @staticmethod
     def get():
