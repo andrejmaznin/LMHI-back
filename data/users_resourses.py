@@ -15,7 +15,7 @@ class UsersResource(Resource):
             pass
         print(type(payload))
         session = db_session.create_session()
-        if not session.query(User).filter(User.email == payload).all():
+        if not session.query(User).filter(User.email == payload["email"]).all():
             user = User(
                 name=payload['name'],
                 hashed_password=payload["hashed_password"],
