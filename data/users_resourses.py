@@ -7,7 +7,7 @@ from flask_restful import Resource
 class UsersResource(Resource):
     @staticmethod
     def post():
-        """        payload = request.get_json()
+        payload = request.get_json()
         session = db_session.create_session()
         if not session.query(User).filter(User.email == payload['email']).all():
             user = User(
@@ -26,13 +26,15 @@ class UsersResource(Resource):
         else:
             response = jsonify({'ERROR': 'USER ALREADY EXISTS'})
             response.status_code = 400
-            return response"""
-        response = jsonify({'success': 'OK'})
-        response.status_code = 201
-        return response
+            return response
+
     @staticmethod
     def get():
-        response = jsonify({'success': 'OK'})
+        session = db_session.create_session()
+
+        users = session.query(User).all()
+        users = [i.__dict__ for i in users]
+        response = jsonify({"users": users, 'success': 'OK'})
         response.status_code = 201
         return response
 
