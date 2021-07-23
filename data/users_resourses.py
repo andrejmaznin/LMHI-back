@@ -7,7 +7,7 @@ from flask_restful import Resource
 class UsersResource(Resource):
     @staticmethod
     def post():
-        payload = request.json()
+        payload = request.json
         session = db_session.create_session()
         if not session.query(User).filter(User.email == payload['email']).all():
             user = User(
@@ -40,7 +40,7 @@ class UsersResource(Resource):
 
     @staticmethod
     def patch():
-        payload = request.json()
+        payload = request.json
         session = db_session.create_session()
 
         data = payload["data"]  # все, что нужно изменить
