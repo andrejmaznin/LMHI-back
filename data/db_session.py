@@ -8,16 +8,13 @@ __factory = None
 SqlAlchemyBase = dec.declarative_base()
 
 
-def global_init(db_file):
+def global_init():
     global __factory
 
     if __factory:
         return
 
-    if not db_file or not db_file.strip():
-        raise Exception("Необходимо указать файл базы данных.")
-
-    conn_str = os.environ['DATABASE_URL'] 
+    conn_str = os.environ['DATABASE_URL']
     print(f"Подключение к базе данных по адресу {conn_str}")
 
     engine = sa.create_engine(conn_str, echo=False)
