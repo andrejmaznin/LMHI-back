@@ -8,6 +8,12 @@ class UsersResource(Resource):
     @staticmethod
     def post():
         payload = request.json
+        print(payload)
+        try:
+            print(payload.__dict__)
+        except Exception:
+            pass
+        print(type(payload))
         session = db_session.create_session()
         if not session.query(User).filter(User.email == payload['email']).all():
             user = User(
