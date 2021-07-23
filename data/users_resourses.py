@@ -7,7 +7,7 @@ from flask_restful import Resource
 class UsersResource(Resource):
     @staticmethod
     def post():
-        payload = request.get_json(force=True)
+        """        payload = request.get_json(force=True)
         print(payload)
         try:
             print(payload.__dict__)
@@ -32,8 +32,11 @@ class UsersResource(Resource):
         else:
             response = jsonify({'ERROR': 'USER ALREADY EXISTS'})
             response.status_code = 400
-            return response
-
+            return response"""
+        response = jsonify({'success': 'OK'})
+        response.status_code = 201
+        return response
+    
     @staticmethod
     def get():
         session = db_session.create_session()
