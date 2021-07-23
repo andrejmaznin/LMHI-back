@@ -1,3 +1,4 @@
+import os
 import sqlalchemy as sa
 import sqlalchemy.orm as orm
 from sqlalchemy.orm import Session
@@ -16,7 +17,7 @@ def global_init(db_file):
     if not db_file or not db_file.strip():
         raise Exception("Необходимо указать файл базы данных.")
 
-    conn_str = f'postgresql://postgres:newPassword@25.78.29.199:5432/{db_file.strip()}'
+    conn_str = os.environ['DATABASE_URL'] 
     print(f"Подключение к базе данных по адресу {conn_str}")
 
     engine = sa.create_engine(conn_str, echo=False)
