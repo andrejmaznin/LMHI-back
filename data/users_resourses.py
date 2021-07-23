@@ -44,6 +44,7 @@ class UsersResource(Resource):
 
         users = session.query(User).all()
         users = [i.__dict__ for i in users]
+        print(users)
         response = jsonify({"users": users, 'success': 'OK'})
         response.status_code = 201
         return response
