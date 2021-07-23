@@ -7,7 +7,7 @@ from flask_restful import Resource
 class UsersResource(Resource):
     @staticmethod
     def post():
-        payload = request.json
+        payload = request.get_json(force=True)
         print(payload)
         try:
             print(payload.__dict__)
@@ -15,7 +15,7 @@ class UsersResource(Resource):
             pass
         print(type(payload))
         session = db_session.create_session()
-        if not session.query(User).filter(User.email == payload['email']).all():
+        if not session.query(User).filter(User.email == payload).all():
             user = User(
                 name=payload['name'],
                 hashed_password=payload["hashed_password"],
