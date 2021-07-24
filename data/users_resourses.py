@@ -7,17 +7,16 @@ from flask_restful import Resource
 class UsersResource(Resource):
     @staticmethod
     def post():
-        payload = request.get_json()
-        session = db_session.create_session()
+        payload = request.get_json(force=True)
 
-        if not session.query(User).filter(User.email == payload['email']).all():
+        session = db_session.create_session()
+        if not session.query(User).filter(User.email == payload["email"]).all():
             user = User(
                 name=payload['name'],
                 hashed_password=payload["hashed_password"],
                 email=payload['email'],
                 info=payload['info']
             )
-
             session.add(user)
             user_id = session.query(User).filter_by(
                 email=payload["email"]).one().id  # получаем id созданного пользователя, чтобы сообщить его в ответе
@@ -25,7 +24,6 @@ class UsersResource(Resource):
             response = jsonify({'success': 'OK', "id": user_id})
             response.status_code = 201
             return response
-
         else:
             response = jsonify({'ERROR': 'USER ALREADY EXISTS'})
             response.status_code = 400
@@ -33,13 +31,18 @@ class UsersResource(Resource):
 
     @staticmethod
     def get():
-        response = jsonify({'success': 'OK'})
+        session = db_session.create_session()
+
+        users = session.query(User).all()
+        users = [{"email": i.email, "hashed_password": i.hashed_password, "name": i.name, "info": i.info} for i in
+                 users]
+        response = jsonify({"users": users, 'success': 'OK'})
         response.status_code = 201
         return response
 
     @staticmethod
     def patch():
-        payload = request.json()
+        payload = request.json
         session = db_session.create_session()
 
         data = payload["data"]  # все, что нужно изменить
