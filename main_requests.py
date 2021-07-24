@@ -9,7 +9,7 @@ from data.users_resourses import UsersResource, UserAuthResource
 app = Flask(__name__)
 api = Api(app)
 
-db_session.global_init("lmhi")
+db_session.global_init()
 api.add_resource(UsersResource, '/users')
 api.add_resource(MoodNoteResource, '/mood_notes')
 api.add_resource(MoodScaleResource, '/mood_scales')
