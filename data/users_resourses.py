@@ -60,8 +60,6 @@ class UsersResource(Resource):
             response = jsonify({'ERROR': 'USER NOT FOUND'})
             response.status_code = 404
             return response
-<<<<<<< Updated upstream
-=======
 
 
 class UserAuthResource(Resource):
@@ -121,4 +119,3 @@ class UserAuthResource(Resource):
         response = jsonify({"sessions": sessions, 'success': 'OK'})
         response.status_code = 201
         return response
->>>>>>> Stashed changes
