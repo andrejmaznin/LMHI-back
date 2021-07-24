@@ -10,3 +10,4 @@ class Session(SqlAlchemyBase):
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
     user_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("users.id"))
     user = orm.relation("User")
+    date = sqlalchemy.Column(sqlalchemy.DateTime, nullable=False)

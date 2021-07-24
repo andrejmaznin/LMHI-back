@@ -10,4 +10,3 @@ class User(SqlAlchemyBase):
     hashed_password = sqlalchemy.Column(sqlalchemy.String, nullable=False)
     email = sqlalchemy.Column(sqlalchemy.String, nullable=False, unique=True)
     info = sqlalchemy.Column(sqlalchemy.String, nullable=True)
-    session = sqlalchemy.Column(sqlalchemy.ARRAY(sqlalchemy.String), nullable=True)
