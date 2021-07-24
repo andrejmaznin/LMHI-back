@@ -1,4 +1,5 @@
 from data import db_session
+from data.auth_sessions import Session
 from data.users import User
 from flask import jsonify, request
 from flask_restful import Resource
@@ -62,3 +63,72 @@ class UsersResource(Resource):
             response = jsonify({'ERROR': 'USER NOT FOUND'})
             response.status_code = 404
             return response
+
+
+class UserAuthResource(Resource):
+    @staticmethod
+    def post():
+        payload = request.get_json(force=True)
+
+        session = db_session.create_session()
+        user = session.query(User).filter_by(email=payload["email"]).one()
+
+        if not user:
+            response = jsonify({'ERROR': 'NO USER'})
+            response.status_code = 400
+            return response
+
+        if payload["action"] == "login":
+            try:
+                session.query(Session).filter_by(user_id=user.id).one()
+
+            except Exception:
+                if payload["email"] == user.email and payload["hashed_password"] == user.hashed_password:
+                    auth = Session(
+                        user_id=user.id)
+
+                    session.add(auth)
+                    session.commit()
+                    session_id = session.query(Session).filter_by(user_id=user.id).one().id
+
+                    response = jsonify({"session_id": session_id, 'success': 'OK'})
+                    response.status_code = 201
+                    return response
+
+                response = jsonify({'ERROR': 'WRONG USERNAME OR PASSWORD'})
+                response.status_code = 400
+                return response
+
+            response = jsonify({'ERROR': 'SESSION ALREADY EXISTS'})
+            response.status_code = 400
+            return response
+
+        elif payload["action"] == "exit":
+            auth_session = session.query(Session).get(payload["id"])
+            if auth_session.id:
+                if auth_session.user_id == user.id:
+                    session.query(Session).filter_by(id=payload["id"]).delete()
+                    session.commit()
+
+                    response = jsonify({'success': 'OK'})
+                    response.status_code = 201
+                    return response
+
+                response = jsonify({'ERROR': 'WRONG USER ID'})
+                response.status_code = 400
+                return response
+
+            response = jsonify({'ERROR': 'WRONG SESSION ID'})
+            response.status_code = 400
+            return response
+
+    @staticmethod
+    def get():
+        session = db_session.create_session()
+
+        sessions = session.query(Session).all()
+        sessions = [{"id": i.id, "user_id": i.user_id} for i in
+                    sessions]
+        response = jsonify({"sessions": sessions, 'success': 'OK'})
+        response.status_code = 201
+        return response
