@@ -5,9 +5,10 @@ from .mood_scales import MoodScale
 import traceback
 
 
+# TODO: встроить индивидуальные клучи для разработчков для изменения таблицы (27.07.2021)
 class MoodScaleResource(Resource):
     @staticmethod
-    def post():
+    def post():  # добавление одной новой строки, требуется только имя строки
         payload = request.get_json()
         session = db_session.create_session()
         try:
@@ -25,11 +26,10 @@ class MoodScaleResource(Resource):
             return response
 
     @staticmethod
-    def get():
+    def get():  # получение всей таблицы с id и name
         session = db_session.create_session()
         try:
             scales = [scale.as_dict() for scale in session.query(MoodScale).all()]
-            print(scales)
             response = jsonify({'SUCCES': 'OK', 'scales': scales})
             response.status_code = 201
             return response

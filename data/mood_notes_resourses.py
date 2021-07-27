@@ -3,18 +3,18 @@ from flask_restful import Resource, abort
 from . import db_session
 from .mood_notes import MoodNote
 from .users import User
+from .session_check import check_session
 import traceback
 
 
 class MoodNoteResource(Resource):
     @staticmethod
-    def post():
+    def post():  # добавление одной новой записи дневника, требуется session_id, user_id, scale_id, date, value
         payload = request.get_json()
         session = db_session.create_session()
         try:
-            # if session.query(User).filter(User.id == user_id, User.session.like(
-            #         session_id)).all():  # проверка наличия пользователя с такой сессией
-            if session.query(User).filter_by(id=payload['user_id']).all():  # заглушка
+            if check_session(payload['session_id'],
+                             payload['user_id']):  # проверка наличия пользователя с такой сессией
                 diary_note = MoodNote(user_id=payload['user_id'],
                                       scale_id=payload['scale_id'],
                                       date=payload['date'],
@@ -38,13 +38,13 @@ class MoodNoteResource(Resource):
             return response
 
     @staticmethod
-    def get():
+    def get():  # получение всех записей по user_id и scale_id. Требуется session_id, user_id, scale_id
         payload = request.get_json()
         session = db_session.create_session()
         try:
-            # if session.query(User).filter(User.id == user_id, User.session.like(
-            #         session_id)).all():  # проверка наличия пользователя с такой сессией
-            if session.query(User).filter_by(id=payload['user_id']).all():  # заглушка
+            if check_session(payload['session_id'],
+                             payload['user_id']):  # проверка наличия пользователя с такой сессией
+
                 # возвращение списка дневника настроений по пользователю и настроению
                 mood_notes = [note.as_dict() for note in
                               session.query(MoodNote).filter(MoodNote.user_id == payload['user_id'],
@@ -63,13 +63,12 @@ class MoodNoteResource(Resource):
             return response
 
     @staticmethod
-    def patch():
+    def patch():  # изменение уже существующей записи по id записи. Требуется id, value.
         payload = request.get_json()
         session = db_session.create_session()
         try:
-            # if session.query(User).filter(User.id == user_id, User.session.like(
-            #         session_id)).all():  # проверка наличия пользователя с такой сессией
-            if session.query(User).filter_by(id=payload['user_id']).all():  # заглушка
+            if check_session(payload['session_id'],
+                             payload['user_id']):  # проверка наличия пользователя с такой сессией
                 # возможно только обновление параметра value
                 session.query(MoodNote).filter_by(id=payload['id']).update({'value': payload['value']})
                 session.commit()
