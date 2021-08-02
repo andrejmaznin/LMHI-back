@@ -1,4 +1,4 @@
-from data import db_session
+from . import db_session
 from data.auth_sessions import Session
 from data.users import User
 from flask import jsonify, request
@@ -71,12 +71,14 @@ class UserAuthResource(Resource):
         payload = request.get_json(force=True)
 
         session = db_session.create_session()
-        user = session.query(User).filter_by(email=payload["email"]).one()
+        user = session.query(User).filter_by(email=payload["email"]).all()
 
         if not user:
             response = jsonify({'ERROR': 'NO USER'})
             response.status_code = 400
             return response
+
+        user = user[0]
 
         if payload["action"] == "login":
             try:

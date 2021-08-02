@@ -16,14 +16,14 @@ class HabitResource(Resource):
             if check_session(payload['session_id'],
                              payload['user_id']):  # проверка наличия пользователя с такой сессией
                 habit_note = Habit(user_id=payload['user_id'],
-                                      habit_id=payload['scale_id'],
-                                      date=payload['date'],
-                                      value=payload['value']
-                                      )
+                                   habit_name_id=payload['habit_id'],
+                                   date=payload['date'],
+                                   value=payload['value']
+                                   )
                 session.add(habit_note)
                 session.commit()
                 habit_note_id = session.query(Habit).filter(Habit.date == payload['date'],
-                                                               Habit.scale_id == payload['scale_id']).all()[0].id
+                                                            Habit.habit_name_id == payload['habit_id']).all()[0].id
                 response = jsonify({'success': 'OK', "id": habit_note_id})
                 response.status_code = 201
                 return response
@@ -47,8 +47,8 @@ class HabitResource(Resource):
 
                 # возвращение списка дневника настроений по пользователю и настроению
                 habit_notes = [note.as_dict() for note in
-                              session.query(Habit).filter(Habit.user_id == payload['user_id'],
-                                                             Habit.scale_id == payload['scale_id']).all()]
+                               session.query(Habit).filter(Habit.user_id == payload['user_id'],
+                                                           Habit.habit_name_id == payload['habit_id']).all()]
                 response = jsonify({'success': 'OK', "mood_notes": habit_notes})
                 response.status_code = 201
                 return response
@@ -63,7 +63,7 @@ class HabitResource(Resource):
             return response
 
     @staticmethod
-    def patch():  # изменение уже существующей записи по id записи. Требуется id, value.
+    def patch():  # изменение уже существующей записи по id записи. Требуется id, value, session_id, user_id
         payload = request.get_json()
         session = db_session.create_session()
         try:

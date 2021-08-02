@@ -1,18 +1,19 @@
-from data import db_session
 from data.auth_sessions import Session
 from data.users import User
 from flask import jsonify, request
 from flask_restful import Resource
 from datetime import datetime
+from . import db_session
 
 
 def check_session(session_id, user_id):
     db_sess = db_session.create_session()
-    session = db_sess.query(Session).filter(Session.id == session_id).one()
+    session = db_sess.query(Session).filter(Session.id == session_id).all()
     if session:
+        session = session[0]
         if session.user_id == user_id:
-            session.date = datetime.now()
-            db_sess.update(session)
+            date = {'date': datetime.now().strftime('%y.%m.%d %H:%M:%S')}
+            db_sess.query(Session).filter_by(id=session.id).update(date)
             db_sess.commit()
             return True
         return False
