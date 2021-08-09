@@ -1,5 +1,5 @@
+from . import db_session
 import sqlalchemy
-from data import db_session
 from data.auth_sessions import Session
 from data.users import User
 from flask import jsonify, request
@@ -37,8 +37,7 @@ class UsersResource(Resource):
         session = db_session.create_session()
 
         users = session.query(User).all()
-        users = [{"email": i.email, "hashed_password": i.hashed_password, "name": i.name, "info": i.info,
-                  "session": i.session} for i in
+        users = [{"email": i.email, "hashed_password": i.hashed_password, "name": i.name, "info": i.info} for i in
                  users]
         response = jsonify({"users": users, 'success': 'OK'})
         response.status_code = 201
