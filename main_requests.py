@@ -5,8 +5,8 @@ from data import db_session
 from data.mood_notes_resourses import MoodNoteResource
 from data.mood_scales_resourses import MoodScaleResource
 from data.users_resourses import UsersResource, UserAuthResource
-from .data.habits_resourses import HabitResource
-from .data.habits_names_resourses import HabitNameResource
+from data.habits_resourses import HabitResource
+from data.habits_names_resourses import HabitNameResource
 
 app = Flask(__name__)
 api = Api(app)
