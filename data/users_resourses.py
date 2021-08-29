@@ -1,8 +1,10 @@
+import sqlalchemy
 from data import db_session
 from data.auth_sessions import Session
 from data.users import User
 from flask import jsonify, request
 from flask_restful import Resource
+from sqlalchemy import or_
 
 
 class UsersResource(Resource):
@@ -35,7 +37,8 @@ class UsersResource(Resource):
         session = db_session.create_session()
 
         users = session.query(User).all()
-        users = [{"email": i.email, "hashed_password": i.hashed_password, "name": i.name, "info": i.info} for i in
+        users = [{"email": i.email, "hashed_password": i.hashed_password, "name": i.name, "info": i.info,
+                  "session": i.session} for i in
                  users]
         response = jsonify({"users": users, 'success': 'OK'})
         response.status_code = 201
@@ -69,37 +72,33 @@ class UserAuthResource(Resource):
     @staticmethod
     def post():
         payload = request.get_json(force=True)
-
         session = db_session.create_session()
-        user = session.query(User).filter_by(email=payload["email"]).one()
+        {"login": ""}
+        try:
+            user = session.query(User).filter(
+                or_(User.email == payload["login"], User.phone == payload["login"],
+                    User.login == payload["login"])).one()
 
-        if not user:
+        except sqlalchemy.exc.NoResultFound:
             response = jsonify({'ERROR': 'NO USER'})
             response.status_code = 400
             return response
 
         if payload["action"] == "login":
-            try:
-                session.query(Session).filter_by(user_id=user.id).one()
+            if payload["hashed_password"] == user.hashed_password:
+                auth = Session(
+                    user_id=user.id)
 
-            except Exception:
-                if payload["email"] == user.email and payload["hashed_password"] == user.hashed_password:
-                    auth = Session(
-                        user_id=user.id)
-
-                    session.add(auth)
-                    session.commit()
-                    session_id = session.query(Session).filter_by(user_id=user.id).one().id
-
-                    response = jsonify({"session_id": session_id, 'success': 'OK'})
-                    response.status_code = 201
-                    return response
-
-                response = jsonify({'ERROR': 'WRONG USERNAME OR PASSWORD'})
-                response.status_code = 400
+                session.add(auth)
+                session.commit()
+                session_id = session.query(Session).filter_by(user_id=user.id).all()[-1].id
+                user.session = user.session + [session_id] if user.session else [session_id]
+                session.commit()
+                response = jsonify({"session_id": session_id, 'success': 'OK'})
+                response.status_code = 201
                 return response
 
-            response = jsonify({'ERROR': 'SESSION ALREADY EXISTS'})
+            response = jsonify({'ERROR': 'WRONG USERNAME, LOGIN, PHONE OR PASSWORD'})
             response.status_code = 400
             return response
 
