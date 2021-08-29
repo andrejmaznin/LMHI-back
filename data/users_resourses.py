@@ -1,5 +1,5 @@
 import sqlalchemy
-from data import db_session
+from . import db_session
 from data.auth_sessions import Session
 from data.users import User
 from flask import jsonify, request

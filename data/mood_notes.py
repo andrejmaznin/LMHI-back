@@ -1,6 +1,7 @@
 import sqlalchemy
 from sqlalchemy import orm
 from .db_session import SqlAlchemyBase
+from datetime import datetime
 
 
 class MoodNote(SqlAlchemyBase):
@@ -11,7 +12,7 @@ class MoodNote(SqlAlchemyBase):
     user = orm.relation('User')
     scale_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("mood_scales.id"))
     scale = orm.relation('MoodScale')
-    date = sqlalchemy.Column(sqlalchemy.Date, nullable=False)
+    date = sqlalchemy.Column(sqlalchemy.Date, nullable=False, default=datetime.today)
     value = sqlalchemy.Column(sqlalchemy.Integer, nullable=False)
 
     def as_dict(self):
