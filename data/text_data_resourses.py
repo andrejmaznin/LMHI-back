@@ -16,7 +16,8 @@ class TextDataResource(Resource):
                 code=payload['code'], info=payload["info"]
             )
             session.add(text_block)
-
+            session.commit()
+            
             response = jsonify({'success': 'OK'})
             response.status_code = 201
             return response
