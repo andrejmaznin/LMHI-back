@@ -17,7 +17,7 @@ class TextDataResource(Resource):
             )
             session.add(text_block)
             session.commit()
-            
+
             response = jsonify({'success': 'OK'})
             response.status_code = 201
             return response
@@ -30,15 +30,16 @@ class TextDataResource(Resource):
     @staticmethod
     def get():
         payload = request.get_json(force=True)
-
+        ans = []
         session = db_session.create_session()
-        text = session.query(Result).get(payload["code"])
-        if text:
-            response = jsonify({'success': 'OK', "text": text.info})
-            response.status_code = 201
-            return response
+        for i in payload["results"]:
+            text = session.query(Result).get(i)
+            if text:
+                ans.append(text.info)
+            else:
+                ans.append("ERROR")
 
-        else:
-            response = jsonify({'ERROR': 'INVALID CODE'})
-            response.status_code = 400
-            return response
+        response = jsonify({'success': 'OK', "results": ans})
+        response.status_code = 201
+        return response
+
