@@ -21,14 +21,19 @@ class TextDataResource(Resource):
                 ans[i] = text.info
             else:
                 raise BadRequest()
+        response = jsonify({'success': 'OK', "result": ans})
+        response.status_code = 201
+        return response
 
     @staticmethod
     def post():
         payload = request.get_json(force=True)
         session = db_session.create_session()
         data = Result(code=payload["code"], info=payload["info"])
-        session.add(data)
-        session.commit()
+        check = session.query(Result).get(payload["code"])
+        if not check:
+            session.add(data)
+            session.commit()
 
         response = jsonify({'success': 'OK', "row": data.as_dict()})
         response.status_code = 201

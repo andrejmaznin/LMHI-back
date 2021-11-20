@@ -3,7 +3,7 @@ from sqlalchemy import orm
 from .db_session import SqlAlchemyBase
 
 
-class Test_result(SqlAlchemyBase):
+class TestResult(SqlAlchemyBase):
     __tablename__ = 'test_results'
 
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
