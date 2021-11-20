@@ -30,6 +30,6 @@ class TextDataResource(Resource):
         session.add(data)
         session.commit()
 
-        response = jsonify({'success': 'OK', "row": data.as_dict()})
+        response = jsonify({'success': 'OK', "row": session.query(Result).get(payload["code"]).as_dict()})
         response.status_code = 201
         return response
