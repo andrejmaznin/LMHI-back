@@ -7,5 +7,5 @@ for i in files:
     with open(filename, encoding="utf-8") as f:
         for j in f.readlines():
             code, info = j.rstrip("\n").split("  ")
-            d = {"code": i + code, "info": info}
+            d = {"code": i + "/" + code, "info": info}
             print(post("https://luscherian.herokuapp.com/result", json=d).json())
