@@ -34,7 +34,8 @@ class TextDataResource(Resource):
         if not check:
             session.add(data)
         response = jsonify({'success': 'OK', "row": session.query(Result).get(payload["code"]).as_dict()})
-        session.commit()
         response.status_code = 201
+
+        session.commit()
         return response
 
