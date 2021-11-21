@@ -2,7 +2,7 @@ from flask import jsonify
 from flask import request
 from flask_restful import Resource
 from werkzeug.exceptions import BadRequest
-
+from sqlalchemy.exc import IntegrityError
 from data import db_session
 from data.text_data import Result
 
@@ -10,7 +10,7 @@ from data.text_data import Result
 class TextDataResource(Resource):
     # url?red=xxxx&green=xxxx&blue=xxxx&yellow=xxxx&main=xxxx
     @staticmethod
-    def get():
+    def get(num: str = None):
         session = db_session.create_session()
         ans = {}
         args = request.args
@@ -26,16 +26,33 @@ class TextDataResource(Resource):
         return response
 
     @staticmethod
-    def post():
-        payload = request.get_json(force=True)
+    def post(num: str = None):
         session = db_session.create_session()
+        payload = request.get_json(force=True)
+
+        if num:
+            entities = payload["payload"]
+            entities = [Result(code=i["code"], info=i["info"]) for i in entities]
+
+            try:
+                session.add_all(entities)
+                session.commit()
+            except IntegrityError:
+                raise BadRequest("Row already exists")
+
+            response = jsonify({'success': 'OK', "rows": len(entities)})
+            response.status_code = 201
+            return response
+
         data = Result(code=payload["code"], info=payload["info"])
-        check = session.query(Result).get(payload["code"])
-        if not check:
+
+        try:
             session.add(data)
+        except IntegrityError:
+            raise BadRequest("Row already exists")
+
         response = jsonify({'success': 'OK', "row": session.query(Result).get(payload["code"]).as_dict()})
         response.status_code = 201
-
         session.commit()
         return response
 
