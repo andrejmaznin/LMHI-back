@@ -1,9 +1,8 @@
 from flask import jsonify, request
-from flask_restful import Resource, abort
-from . import db_session
-from .habits import Habit
-from .users import User
-from .session_check import check_session
+from flask_restful import Resource
+from data.service import db_session
+from data.models.habits import Habit
+from data.service.session_check import check_session
 import traceback
 
 

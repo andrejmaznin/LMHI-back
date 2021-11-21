@@ -1,18 +1,20 @@
 from flask import Flask
 from flask_restful import Api
 
-from data import db_session
-from data.mood_notes_resourses import MoodNoteResource
-from data.mood_scales_resourses import MoodScaleResource
-from data.users_resourses import UsersResource, UserAuthResource
-from data.text_data_resourses import TextDataResource
-from data.habits_resourses import HabitResource
-from data.habits_names_resourses import HabitNameResource
-from data.service_resourse import ServiceResource
+from data.handlers.habits_names_resourses import HabitNameResource
+from data.handlers.habits_resourses import HabitResource
+from data.handlers.mood_notes_resourses import MoodNoteResource
+from data.handlers.mood_scales_resourses import MoodScaleResource
+from data.handlers.service_resourse import ServiceResource
+from data.handlers.text_data_resourses import TextDataResource
+from data.handlers.users_resourses import UsersResource, UserAuthResource
+from data.service import db_session
+
 app = Flask(__name__)
 api = Api(app)
 
 db_session.global_init()
+
 api.add_resource(UsersResource, '/users')
 api.add_resource(MoodNoteResource, '/mood_notes')
 api.add_resource(MoodScaleResource, '/mood_scales')

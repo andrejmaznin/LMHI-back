@@ -1,9 +1,6 @@
-from data.auth_sessions import Session
-from data.users import User
-from flask import jsonify, request
-from flask_restful import Resource
+from data.models.auth_sessions import Session
 from datetime import datetime
-from . import db_session
+from data.service import db_session
 
 
 def check_session(session_id, user_id):

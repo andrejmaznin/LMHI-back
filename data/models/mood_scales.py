@@ -1,10 +1,9 @@
 import sqlalchemy
-from sqlalchemy import orm
-from .db_session import SqlAlchemyBase
+from data.service.db_session import SqlAlchemyBase
 
 
-class HabitName(SqlAlchemyBase):
-    __tablename__ = 'habit_names'
+class MoodScale(SqlAlchemyBase):
+    __tablename__ = 'mood_scales'
 
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
     name = sqlalchemy.Column(sqlalchemy.String, nullable=False)

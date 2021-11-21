@@ -1,10 +1,11 @@
 from flask import jsonify
 from flask import request
 from flask_restful import Resource
-from werkzeug.exceptions import BadRequest
 from sqlalchemy.exc import IntegrityError
-from data import db_session
-from data.text_data import Result
+from werkzeug.exceptions import BadRequest
+
+from data.models.text_data import Result
+from data.service import db_session
 
 
 class TextDataResource(Resource):
@@ -15,12 +16,13 @@ class TextDataResource(Resource):
         ans = {}
         args = request.args
         for i in args.keys():
-            code = i + args[i]
+            code = i + "/" + args[i]
             text = session.query(Result).get(code)
             if text is not None:
                 ans[i] = text.info
             else:
                 raise BadRequest()
+
         response = jsonify({'success': 'OK', "result": ans})
         response.status_code = 201
         return response

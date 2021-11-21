@@ -3,8 +3,8 @@ from flask import request
 from flask_restful import Resource
 from werkzeug.exceptions import BadRequest
 
-from data import db_session
-from data.models import *
+from data.service import db_session
+from data.models.__all_models import *
 
 
 class ServiceResource(Resource):

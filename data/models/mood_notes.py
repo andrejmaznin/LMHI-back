@@ -1,19 +1,19 @@
 import sqlalchemy
 from sqlalchemy import orm
-from .db_session import SqlAlchemyBase
+from data.service.db_session import SqlAlchemyBase
 from datetime import datetime
 
 
-class Habit(SqlAlchemyBase):
-    __tablename__ = 'habits'
+class MoodNote(SqlAlchemyBase):
+    __tablename__ = 'mood_notes'
 
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
     user_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("users.id"))
-    user = orm.relation("User")
-    habit_name_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("habit_names.id"))
-    habit_name = orm.relation("HabitName")
+    user = orm.relation('User')
+    scale_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("mood_scales.id"))
+    scale = orm.relation('MoodScale')
+    date = sqlalchemy.Column(sqlalchemy.Date, nullable=False, default=datetime.today)
     value = sqlalchemy.Column(sqlalchemy.Integer, nullable=False)
-    date = sqlalchemy.Column(sqlalchemy.DateTime, nullable=False, default=datetime.now)
 
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}

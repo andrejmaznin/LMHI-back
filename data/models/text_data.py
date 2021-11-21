@@ -1,6 +1,6 @@
 import sqlalchemy
 
-from .db_session import SqlAlchemyBase
+from data.service.db_session import SqlAlchemyBase
 
 
 class Result(SqlAlchemyBase):
