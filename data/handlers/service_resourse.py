@@ -3,8 +3,8 @@ from flask import request
 from flask_restful import Resource
 from werkzeug.exceptions import BadRequest
 
-from data.service import db_session
 from data.models.__all_models import *
+from data.service import db_session
 
 
 class ServiceResource(Resource):
@@ -23,13 +23,19 @@ class ServiceResource(Resource):
                 value_string = eval(f"model_class.{value}")
 
                 if reverse:
-                    query = session.query(model_class).filter(value_string.notlike(template)).delete(
-                        synchronize_session=False)
+                    query = session.query(model_class).filter(value_string.notlike(template))
                 else:
-                    query = session.query(model_class).filter(value_string.like(template)).delete(
+                    query = session.query(model_class).filter(value_string.like(template))
+
+                if model_class.__tablename__ == "users":
+                    user_ids = []
+                    for i in query.all():
+                        user_ids.append(i.id)
+                        
+                    sessions = session.query(Session).filter(Session.user_id.in_(user_ids)).delete(
                         synchronize_session=False)
 
-                deleted = query
+                deleted = query.delete(synchronize_session=False)
                 session.commit()
 
                 response = jsonify({'success': 'OK', "deleted": deleted})

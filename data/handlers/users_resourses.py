@@ -1,10 +1,11 @@
 import sqlalchemy
-from data.service import db_session
-from data.models.auth_sessions import Session
-from data.models.users import User
 from flask import jsonify, request
 from flask_restful import Resource
 from sqlalchemy import or_
+
+from data.models.auth_sessions import Session
+from data.models.users import User
+from data.service import db_session
 
 
 class UsersResource(Resource):
