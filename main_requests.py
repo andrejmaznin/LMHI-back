@@ -24,7 +24,7 @@ api.add_resource(HabitResource, '/habits')
 api.add_resource(HabitNameResource, '/habit_names')
 api.add_resource(ServiceResource, "/service/<action>")
 api.add_resource(BetaHabitResource, '/beta_habits')
-api.add_resource(MoodScaleResource, "/mood_criteria")
+api.add_resource(MoodCriteriaResource, "/mood_criteria")
 
 if __name__ == '__main__':
     app.run(host="127.0.0.1", port=8080, debug=True)
