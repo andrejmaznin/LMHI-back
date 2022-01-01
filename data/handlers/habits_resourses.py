@@ -1,7 +1,7 @@
 from flask import jsonify, request
 from flask_restful import Resource
 from data.service import db_session
-from data.models.habits import Habit
+from data.models.habits_notes import HabitNote
 from data.service.session_check import check_session
 import traceback
 
@@ -14,15 +14,15 @@ class HabitResource(Resource):
         try:
             if check_session(payload['session_id'],
                              payload['user_id']):  # проверка наличия пользователя с такой сессией
-                habit_note = Habit(user_id=payload['user_id'],
-                                   habit_name_id=payload['habit_id'],
-                                   date=payload['date'],
-                                   value=payload['value']
-                                   )
+                habit_note = HabitNote(user_id=payload['user_id'],
+                                       habit_name_id=payload['habit_id'],
+                                       date=payload['date'],
+                                       value=payload['value']
+                                       )
                 session.add(habit_note)
                 session.commit()
-                habit_note_id = session.query(Habit).filter(Habit.date == payload['date'],
-                                                            Habit.habit_name_id == payload['habit_id']).all()[0].id
+                habit_note_id = session.query(HabitNote).filter(HabitNote.date == payload['date'],
+                                                                HabitNote.habit_name_id == payload['habit_id']).all()[0].id
                 response = jsonify({'success': 'OK', "id": habit_note_id})
                 response.status_code = 201
                 return response
@@ -46,8 +46,8 @@ class HabitResource(Resource):
 
                 # возвращение списка дневника настроений по пользователю и настроению
                 habit_notes = [note.as_dict() for note in
-                               session.query(Habit).filter(Habit.user_id == payload['user_id'],
-                                                           Habit.habit_name_id == payload['habit_id']).all()]
+                               session.query(HabitNote).filter(HabitNote.user_id == payload['user_id'],
+                                                               HabitNote.habit_name_id == payload['habit_id']).all()]
                 response = jsonify({'success': 'OK', "mood_notes": habit_notes})
                 response.status_code = 201
                 return response
@@ -69,7 +69,7 @@ class HabitResource(Resource):
             if check_session(payload['session_id'],
                              payload['user_id']):  # проверка наличия пользователя с такой сессией
                 # возможно только обновление параметра value
-                session.query(Habit).filter_by(id=payload['id']).update({'value': payload['value']})
+                session.query(HabitNote).filter_by(id=payload['id']).update({'value': payload['value']})
                 session.commit()
                 response = jsonify({'SUCCES': 'OK'})
                 response.status_code = 201

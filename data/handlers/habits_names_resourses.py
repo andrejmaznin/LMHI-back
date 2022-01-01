@@ -1,7 +1,7 @@
 from flask import jsonify, request
 from flask_restful import Resource
 from data.service import db_session
-from data.models.habit_names import HabitName
+from data.models.habits import Habit
 import traceback
 
 
@@ -12,10 +12,10 @@ class HabitNameResource(Resource):
         payload = request.get_json()
         session = db_session.create_session()
         try:
-            habit = HabitName(name=payload['name'])
+            habit = Habit(name=payload['name'])
             session.add(habit)
             session.commit()
-            scale_id = session.query(HabitName).filter_by(name=payload['name']).one().id
+            scale_id = session.query(Habit).filter_by(name=payload['name']).one().id
             response = jsonify({'SUCCES': 'OK', 'id': scale_id})
             response.status_code = 201
             return response
@@ -29,7 +29,7 @@ class HabitNameResource(Resource):
     def get():  # получение всей таблицы с id и name
         session = db_session.create_session()
         try:
-            habits = [scale.as_dict() for scale in session.query(HabitName).all()]
+            habits = [scale.as_dict() for scale in session.query(Habit).all()]
             response = jsonify({'SUCCES': 'OK', 'scales': habits})
             response.status_code = 201
             return response
