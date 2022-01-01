@@ -1,0 +1,60 @@
+{
+  "habits": [
+    {
+      "name": "Drink your water",
+      "boolean": false,
+      "lower": 1200,
+      "upper": 2500,
+      "value": "ml"
+    },
+    {
+      "name": "Walk outside",
+      "boolean": false,
+      "lower": 20,
+      "upper": 60,
+      "value": "min"
+    },
+    {
+      "name": "Fruits",
+      "boolean": false,
+      "lower": 1,
+      "upper": 4,
+      "value": "pcs"
+    },
+    {
+      "name": "Reading",
+      "boolean": false,
+      "lower": 10,
+      "upper": 100,
+      "value": "pages"
+    },
+    {
+      "name": "Sleep",
+      "boolean": false,
+      "lower": 6,
+      "upper": 9,
+      "value": "hours"
+    },
+    {
+      "name": "Greenery",
+      "boolean": true,
+      "lower": 0,
+      "upper": 1,
+      "value": null
+    },
+    {
+      "name": "Exercise",
+      "boolean": false,
+      "lower": 15,
+      "upper": 60,
+      "value": "min"
+    },
+    {
+      "name": "Vegetables",
+      "boolean": false,
+      "lower": 1,
+      "upper": 4,
+      "value": "servings"
+    }
+  ]
+}

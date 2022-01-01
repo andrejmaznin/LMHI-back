@@ -21,7 +21,7 @@ class TextDataResource(Resource):
             if text is not None:
                 ans[i] = text.info
             else:
-                raise BadRequest()
+                ans[i] = "ERROR"
 
         response = jsonify({'success': 'OK', "result": ans})
         response.status_code = 201
@@ -57,4 +57,3 @@ class TextDataResource(Resource):
         response.status_code = 201
         session.commit()
         return response
-
