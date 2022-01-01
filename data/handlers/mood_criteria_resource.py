@@ -11,7 +11,7 @@ class MoodCriteriaResource(Resource):
         payload = request.get_json()
         session = db_session.create_session()
         try:
-            criterias = [MoodCriteria(**i) for i in payload['habits']]
+            criterias = [MoodCriteria(**i) for i in payload['mood_criterias']]
             names = [i.name for i in criterias]
             print(criterias, names)
             try:
