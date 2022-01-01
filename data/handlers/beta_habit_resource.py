@@ -37,3 +37,8 @@ class BetaHabitResource(Resource):
         )
         response.status_code = 201
         return response
+
+    def get(self):
+        session = db_session.create_session()
+
+        return [i.as_dict() for i in session.query(Habit).all()]
