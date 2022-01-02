@@ -25,7 +25,7 @@ class TestResultResource(Resource):
         ):
             if unfinished := session.query(TestResult).get(result_id):
                 unfinished.result = test_result.result
-                unfinished.finished = True
+                unfinished.finished = test_result.finished
                 session.commit()
 
                 response = jsonify({'success': 'OK', "id": result_id})
