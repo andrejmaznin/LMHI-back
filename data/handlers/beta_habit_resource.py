@@ -1,10 +1,10 @@
 from flask import jsonify, request
 from flask_restful import Resource
-from data.service import db_session
-from data.models.habits import Habit
-
-from werkzeug.exceptions import BadRequest
 from sqlalchemy.exc import IntegrityError
+from werkzeug.exceptions import BadRequest
+
+from data.models.habits import Habit
+from data.service import db_session
 
 
 class BetaHabitResource(Resource):

@@ -1,8 +1,10 @@
+import traceback
+
 from flask import jsonify, request
 from flask_restful import Resource
-from data.service import db_session
+
 from data.models.mood_scales import MoodScale
-import traceback
+from data.service import db_session
 
 
 # TODO: встроить индивидуальные клучи для разработчков для изменения таблицы (27.07.2021)

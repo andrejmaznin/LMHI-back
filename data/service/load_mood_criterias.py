@@ -1,5 +1,6 @@
-from requests import post
 import json
+
+from requests import post
 
 with open("../schemas/load_mood_criterias.json", mode="r") as schema:
     payload = json.load(schema)

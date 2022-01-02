@@ -1,9 +1,11 @@
+import traceback
+
 from flask import jsonify, request
 from flask_restful import Resource
-from data.service import db_session
+
 from data.models.mood_notes import MoodNote
+from data.service import db_session
 from data.service.session_check import check_session
-import traceback
 
 
 class MoodNoteResource(Resource):

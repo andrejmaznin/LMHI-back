@@ -1,5 +1,6 @@
-from data.models.auth_sessions import Session
 from datetime import datetime
+
+from data.models.auth_sessions import Session
 from data.service import db_session
 
 

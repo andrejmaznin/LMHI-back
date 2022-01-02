@@ -1,16 +1,16 @@
 from flask import Flask
 from flask_restful import Api
 
+from data.handlers.beta_habit_resource import BetaHabitResource
 from data.handlers.habits_names_resourses import HabitNameResource
 from data.handlers.habits_resourses import HabitResource
+from data.handlers.mood_criteria_resource import MoodCriteriaResource
 from data.handlers.mood_notes_resourses import MoodNoteResource
 from data.handlers.mood_scales_resourses import MoodScaleResource
 from data.handlers.service_resourse import ServiceResource
-from data.handlers.text_data_resourses import TextDataResource
-from data.handlers.users_resourses import UsersResource, UserAuthResource
-from data.handlers.beta_habit_resource import BetaHabitResource
-from data.handlers.mood_criteria_resource import MoodCriteriaResource
 from data.handlers.test_results_resources import TestResultResource
+from data.handlers.text_data_resourses import TextDataResource
+from data.handlers.users_resourses import UserAuthResource, UsersResource
 from data.service import db_session
 
 app = Flask(__name__)

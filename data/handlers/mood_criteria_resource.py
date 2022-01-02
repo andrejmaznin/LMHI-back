@@ -1,9 +1,10 @@
 from flask import jsonify, request
 from flask_restful import Resource
-from data.service import db_session
-from data.models.mood_criterias import MoodCriteria
-from werkzeug.exceptions import BadRequest
 from sqlalchemy.exc import IntegrityError
+from werkzeug.exceptions import BadRequest
+
+from data.models.mood_criterias import MoodCriteria
+from data.service import db_session
 
 
 class MoodCriteriaResource(Resource):

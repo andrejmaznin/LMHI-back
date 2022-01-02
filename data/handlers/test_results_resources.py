@@ -1,9 +1,8 @@
-from flask import jsonify
-from flask import request
+from flask import Response, jsonify, request
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
 from werkzeug.exceptions import BadRequest
-from flask import Response
+
 from data.models.test_results import TestResult
 from data.service import db_session
 
