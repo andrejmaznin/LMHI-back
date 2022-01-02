@@ -10,6 +10,7 @@ from data.handlers.text_data_resourses import TextDataResource
 from data.handlers.users_resourses import UsersResource, UserAuthResource
 from data.handlers.beta_habit_resource import BetaHabitResource
 from data.handlers.mood_criteria_resource import MoodCriteriaResource
+from data.handlers.test_results_resources import TestResultResource
 from data.service import db_session
 
 app = Flask(__name__)
@@ -25,6 +26,7 @@ api.add_resource(HabitNameResource, '/habit_names')
 api.add_resource(ServiceResource, "/service/<action>")
 api.add_resource(BetaHabitResource, '/beta_habits')
 api.add_resource(MoodCriteriaResource, "/mood_criteria")
+api.add_resource(TestResultResource, "/test_result")
 
 if __name__ == '__main__':
     app.run(host="127.0.0.1", port=8080, debug=True)
