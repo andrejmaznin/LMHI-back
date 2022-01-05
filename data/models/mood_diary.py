@@ -1,7 +1,9 @@
+from datetime import datetime
+
 import sqlalchemy
 from sqlalchemy import orm
+
 from data.service.db_session import SqlAlchemyBase
-from datetime import datetime
 
 
 class MoodDiary(SqlAlchemyBase):

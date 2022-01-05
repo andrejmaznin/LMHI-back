@@ -1,5 +1,6 @@
-from requests import post
 import os
+
+from requests import post
 
 files = ["red", "green", "blue", "yellow", "main"]
 

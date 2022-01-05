@@ -1,0 +1,8 @@
+{
+  "mood_diary_note": {
+    "user_id": "int",
+    "result": [
+      "int"
+    ]
+  }
+}

@@ -14,3 +14,6 @@ class User(SqlAlchemyBase):
     phone = sqlalchemy.Column(sqlalchemy.String, nullable=True, unique=True)
     info = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     session = sqlalchemy.Column(sqlalchemy.ARRAY(sqlalchemy.Integer), nullable=True)
+
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
