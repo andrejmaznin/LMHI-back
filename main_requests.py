@@ -5,8 +5,7 @@ from data.handlers.beta_habit_resource import BetaHabitResource
 from data.handlers.habits_names_resourses import HabitNameResource
 from data.handlers.habits_resourses import HabitResource
 from data.handlers.mood_criteria_resource import MoodCriteriaResource
-from data.handlers.mood_notes_resourses import MoodNoteResource
-from data.handlers.mood_scales_resourses import MoodScaleResource
+from data.handlers.mood_diary_resource import MoodDiaryResource
 from data.handlers.service_resourse import ServiceResource
 from data.handlers.test_results_resources import TestResultResource
 from data.handlers.text_data_resourses import TextDataResource
@@ -27,6 +26,7 @@ api.add_resource(ServiceResource, "/service/<action>")
 api.add_resource(BetaHabitResource, '/beta_habits')
 api.add_resource(MoodCriteriaResource, "/mood_criteria")
 api.add_resource(TestResultResource, "/test_result")
+api.add_resource(MoodDiaryResource, "/mood_diary")
 
 if __name__ == '__main__':
     app.run(host="127.0.0.1", port=8080, debug=True)
