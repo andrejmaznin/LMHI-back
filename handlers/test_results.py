@@ -1,5 +1,5 @@
-from sqlalchemy.exc import IntegrityError
 from flask_restful import Resource
+from sqlalchemy.exc import IntegrityError
 from werkzeug.exceptions import BadRequest
 
 from models.test_result import TestResult

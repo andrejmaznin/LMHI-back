@@ -1,7 +1,7 @@
 from flask import jsonify
 from flask_restful import Resource
 
-from models.mood_note import MoodDiary
+from models.mood_diary import MoodDiary
 from modules.json_validator import validate_json
 from service import db_session
 

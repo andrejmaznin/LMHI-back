@@ -1,8 +1,9 @@
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
 from werkzeug.exceptions import BadRequest
-from modules.json_validator import validate_json
+
 from models.habit import Habit
+from modules.json_validator import validate_json
 from service import db_session
 
 

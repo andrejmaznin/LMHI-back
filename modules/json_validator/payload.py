@@ -1,8 +1,7 @@
 import json
 from os import path
-from flask import jsonify
 
-from flask import request
+from flask import jsonify, request
 from werkzeug.exceptions import BadRequest
 
 from modules.json_validator.validator import validate_payload

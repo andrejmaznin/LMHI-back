@@ -1,10 +1,9 @@
 from flask import Flask
 from flask_restful import Api
 
-from handlers import (HabitResource, HabitDiaryResource,
-                      MoodCriteriaResource, MoodDiaryResource, ServiceResource,
-                      TestResultResource, TextDataResource, UserAuthResource,
-                      UsersResource)
+from handlers import (HabitDiaryResource, HabitResource, MoodCriteriaResource,
+                      MoodDiaryResource, ServiceResource, TestResultResource,
+                      TextDataResource, UserAuthResource, UsersResource)
 from service import db_session
 
 app = Flask(__name__)
