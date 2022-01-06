@@ -1,5 +1,3 @@
-import os
-
 from requests import post
 
 files = ["red", "green", "blue", "yellow", "main"]
@@ -7,7 +5,7 @@ files = ["red", "green", "blue", "yellow", "main"]
 for i in files:
     filename = i + ".txt"
     body = {"payload": [], "num": 0}
-    with open(os.path.abspath(filename), encoding="utf-8") as f:
+    with open(('../texts/' + filename), encoding="utf-8") as f:
         lines = f.readlines()
         body["num"] = len(lines)
         for j in lines:
