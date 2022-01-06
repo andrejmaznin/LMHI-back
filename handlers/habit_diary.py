@@ -1,8 +1,9 @@
+from flask import request
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
 from werkzeug.exceptions import BadRequest
 
-from models import HabitNote
+from models import HabitNote, User
 from modules.json_validator import validate_json
 from service import db_session
 
@@ -24,12 +25,12 @@ class HabitDiaryResource(Resource):
         return {"id": habit_diary_note.id}
 
     @staticmethod
-    def get(user_id: int = None):
+    def get():
         session = db_session.create_session()
 
-        if user_id is not None:
-            habit_notes = session.query(HabitNote).filter(HabitNote.user_id == user_id).all()
-        else:
-            habit_notes = session.query(HabitNote).all()
+        token = request.headers.get('token')
+        user = session.query(User).filter(User.token == token).first()
 
-        return {"habit_notes": [note.as_dict() for note in habit_notes]}
+        diary_notes = session.query(HabitNote).filter(HabitNote.user_id == user.id)
+
+        return [note.as_dict() for note in diary_notes]

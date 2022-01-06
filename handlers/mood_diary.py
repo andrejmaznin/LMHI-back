@@ -1,6 +1,7 @@
+from flask import request
 from flask_restful import Resource
 
-from models.mood_diary import MoodDiary
+from models import MoodDiary, User
 from modules.json_validator import validate_json
 from service import db_session
 
@@ -17,3 +18,14 @@ class MoodDiaryResource(Resource):
         session.commit()
 
         return {"id": mood_diary_note.id}
+
+    @staticmethod
+    def get():
+        session = db_session.create_session()
+
+        token = request.headers.get('token')
+        user = session.query(User).filter(User.token == token).first()
+
+        diary_notes = session.query(MoodDiary).filter(MoodDiary.user_id == user.id)
+
+        return [note.as_dict() for note in diary_notes]
