@@ -1,4 +1,4 @@
-from uuid import uuid4
+import uuid
 
 import sqlalchemy
 
@@ -16,7 +16,7 @@ class User(SqlAlchemyBase):
     phone = sqlalchemy.Column(sqlalchemy.String, nullable=True, unique=True)
     info = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     session = sqlalchemy.Column(sqlalchemy.ARRAY(sqlalchemy.Integer), nullable=True)
-    token = sqlalchemy.Column(sqlalchemy.String, unique=True, default=uuid4())
+    token = sqlalchemy.Column(sqlalchemy.String)
 
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}

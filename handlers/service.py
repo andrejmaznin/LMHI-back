@@ -1,5 +1,6 @@
 import random
 import string
+from uuid import uuid4
 
 from flask import jsonify, request
 from flask_restful import Resource
@@ -92,8 +93,10 @@ class ServiceResource(Resource):
                     kwargs = {}
                     for j in range(k):
                         kwargs[columns[j]] = value_by_template(templates[j])
-
-                    models.append(model_class(**kwargs))
+                    if model_class is User:
+                        models.append(model_class(**kwargs, token=uuid4()))
+                    else:
+                        models.append(model_class(**kwargs))
 
                 session.add_all(models)
                 session.commit()

@@ -1,3 +1,5 @@
+from uuid import uuid4
+
 from flask import jsonify
 from flask_restful import Resource
 from sqlalchemy import or_
@@ -16,7 +18,7 @@ class UsersResource(Resource):
     def post(payload):
         session = db_session.create_session()
 
-        user = User(**payload)
+        user = User(**payload, token=uuid4())
         session.add(user)
         try:
             session.commit()
