@@ -14,5 +14,6 @@ __all__ = [
     'MoodDiary',
     'TestResult',
     'Interpretation',
-    'User'
+    'User',
+    'Session'
 ]

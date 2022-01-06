@@ -5,8 +5,7 @@ from flask import jsonify, request
 from flask_restful import Resource
 from werkzeug.exceptions import BadRequest
 
-from models import (Habit, HabitNote, Interpretation, MoodCriteria, MoodDiary,
-                    TestResult, User)
+from models import *
 from models import __all__ as all_models
 from service import db_session
 
@@ -16,7 +15,7 @@ max_used_int = 0
 def value_by_template(template):
     global max_used_int
 
-    if template == "int":
+    if template == 'int':
         max_used_int += 1
         return max_used_int + 1
 
@@ -24,14 +23,16 @@ def value_by_template(template):
     ans = []
 
     for i in template:
-        if i == "_":
+        if i == '_':
             ans.append(random.choice(string.ascii_letters + string.digits))
-        elif i == "%":
-            ans += random.choices(string.ascii_letters + string.digits, k=random.randint(10, 30))
+        elif i == '%':
+            ans += random.choices(
+                string.ascii_letters + string.digits, k=random.randint(10, 30)
+            )
         else:
             ans.append(i)
 
-    return "".join(ans)
+    return ''.join(ans)
 
 
 class ServiceResource(Resource):
@@ -40,22 +41,22 @@ class ServiceResource(Resource):
         session = db_session.create_session()
         args = request.args
 
-        if action == "clean_table":
-            template = args.get("template")
-            column = args.get("column")
-            model = args.get("model")
-            reverse = args.get("reverse") == "true"
+        if action == 'clean_table':
+            template = args.get('template')
+            column = args.get('column')
+            model = args.get('model')
+            reverse = args.get('reverse') == 'true'
 
             if model in all_models:
                 model_class = eval(model)  # getting class by its name
-                value_string = eval(f"model_class.{column}")
+                value_string = eval(f'model_class.{column}')
 
                 if reverse:
                     query = session.query(model_class).filter(value_string.notlike(template))
                 else:
                     query = session.query(model_class).filter(value_string.like(template))
 
-                if model_class.__tablename__ == "users":
+                if model_class.__tablename__ == 'users':
                     user_ids = []
                     for i in query.all():
                         user_ids.append(i.id)
@@ -66,18 +67,18 @@ class ServiceResource(Resource):
                 deleted = query.delete(synchronize_session=False)
                 session.commit()
 
-                response = jsonify({'success': 'OK', "deleted": deleted})
+                response = jsonify({'success': 'OK', 'deleted': deleted})
                 response.status_code = 201
                 return response
 
             raise BadRequest()
 
-        elif action == "add":
+        elif action == 'add':
             try:
-                model = args.get("model")
-                columns = args.getlist("column")
-                templates = args.getlist("template")
-                number = int(args.get("number"))
+                model = args.get('model')
+                columns = args.getlist('column')
+                templates = args.getlist('template')
+                number = int(args.get('number'))
 
             except ValueError:
                 raise BadRequest()
@@ -97,4 +98,4 @@ class ServiceResource(Resource):
                 session.add_all(models)
                 session.commit()
 
-                return {"added": number}
+                return {'added': number}

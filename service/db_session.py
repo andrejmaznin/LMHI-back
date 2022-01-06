@@ -26,4 +26,4 @@ def global_init():
 
 def create_session() -> Session:
     global __factory
-    return __factory()
+    return __factory()  # type: ignore

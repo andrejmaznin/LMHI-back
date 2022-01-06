@@ -79,7 +79,7 @@ class UserAuthResource(Resource):
                 user.session = user.session + [auth.id] if user.session else [auth.id]
                 session.commit()
 
-                return {"session_id": auth.id}
+                return {"session_id": auth.id, "user_id": user.id}
 
             raise BadRequest()
 
