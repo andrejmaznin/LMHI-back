@@ -1,8 +1,9 @@
+from flask import request
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
 from werkzeug.exceptions import BadRequest
 
-from models.test_result import TestResult
+from models import TestResult, User
 from modules.json_validator import validate_json
 from service import db_session
 
@@ -20,3 +21,14 @@ class TestResultResource(Resource):
             raise BadRequest()
 
         return {"id": test_result.id}
+
+    @staticmethod
+    def get():
+        session = db_session.create_session()
+
+        token = request.headers.get('token')
+        user = session.query(User).filter(User.token == token).first()
+
+        test_results = session.query(TestResult).filter(TestResult.user_id == user.id)
+
+        return [result.as_dict() for result in test_results]

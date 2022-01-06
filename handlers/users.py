@@ -23,7 +23,7 @@ class UsersResource(Resource):
         except IntegrityError:
             raise BadRequest()
 
-        return {"id": user.id}
+        return {"token": user.token}
 
     @staticmethod
     def get():
@@ -79,7 +79,7 @@ class UserAuthResource(Resource):
                 user.session = user.session + [auth.id] if user.session else [auth.id]
                 session.commit()
 
-                return {"session_id": auth.id, "user_id": user.id}
+                return {"token": user.token}
 
             raise BadRequest()
 
