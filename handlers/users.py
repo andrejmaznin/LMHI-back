@@ -83,7 +83,7 @@ class UserAuthResource(Resource):
 
                 return {"token": user.token}
 
-            raise BadRequest()
+            raise BadRequest('Wrong password')
 
         elif payload["action"] == "exit":
             auth_session = session.query(Session).get(payload["id"])
