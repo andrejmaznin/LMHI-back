@@ -5,7 +5,6 @@ from flask import jsonify, request
 from flask_restful import Resource
 from werkzeug.exceptions import BadRequest
 
-from models import *
 from models import __all__ as all_models
 from service import db_session
 

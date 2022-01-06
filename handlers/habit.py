@@ -23,7 +23,8 @@ class HabitResource(Resource):
 
         return {"habits": len(habits)}
 
-    def get(self):
+    @staticmethod
+    def get():
         session = db_session.create_session()
 
         return [i.as_dict() for i in session.query(Habit).all()]
