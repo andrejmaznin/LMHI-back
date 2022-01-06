@@ -10,21 +10,6 @@ repos:
     hooks:
       - id: flake8
         additional_dependencies: [ flake8-quotes ]
-  - repo: local
-    hooks:
-      - id: generate-proto
-        name: generate-proto
-        entry: poetry run python protobuf/generate.py
-        files: protobuf/
-        language: system
-  - repo: local
-    hooks:
-      - id: poetry
-        name: poetry check
-        entry: poetry check
-        pass_filenames: false
-        language: system
-        files: ^pyproject\.toml$
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: v0.812
     hooks:
