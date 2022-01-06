@@ -1,5 +1,6 @@
 from flask import request
 from flask_restful import Resource
+from werkzeug.exceptions import BadRequest
 
 from models import MoodDiary, User
 from modules.json_validator import validate_json
@@ -25,7 +26,8 @@ class MoodDiaryResource(Resource):
 
         token = request.headers.get('token')
         user = session.query(User).filter(User.token == token).first()
+        if user is not None:
+            diary_notes = session.query(MoodDiary).filter(MoodDiary.user_id == user.id)
+            return [note.as_dict() for note in diary_notes]
 
-        diary_notes = session.query(MoodDiary).filter(MoodDiary.user_id == user.id)
-
-        return [note.as_dict() for note in diary_notes]
+        raise BadRequest()

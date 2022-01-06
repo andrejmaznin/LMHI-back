@@ -14,7 +14,7 @@ class TestResult(SqlAlchemyBase):
     user = orm.relation('User')
     finished = sqlalchemy.Column(sqlalchemy.Boolean, default=False)
     result = sqlalchemy.Column(sqlalchemy.ARRAY(item_type=sqlalchemy.String), nullable=True)
-    date = sqlalchemy.Column(sqlalchemy.DateTime, nullable=False, default=datetime.now())
+    date = sqlalchemy.Column(sqlalchemy.Float, nullable=False, default=datetime.now().timestamp())
 
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}

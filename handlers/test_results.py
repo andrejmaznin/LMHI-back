@@ -28,7 +28,8 @@ class TestResultResource(Resource):
 
         token = request.headers.get('token')
         user = session.query(User).filter(User.token == token).first()
+        if user is not None:
+            test_results = session.query(TestResult).filter(TestResult.user_id == user.id)
+            return [result.as_dict() for result in test_results]
 
-        test_results = session.query(TestResult).filter(TestResult.user_id == user.id)
-
-        return [result.as_dict() for result in test_results]
+        raise BadRequest()

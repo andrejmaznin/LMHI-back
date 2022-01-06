@@ -30,7 +30,8 @@ class HabitDiaryResource(Resource):
 
         token = request.headers.get('token')
         user = session.query(User).filter(User.token == token).first()
+        if user is not None:
+            diary_notes = session.query(HabitNote).filter(HabitNote.user_id == user.id)
+            return [note.as_dict() for note in diary_notes]
 
-        diary_notes = session.query(HabitNote).filter(HabitNote.user_id == user.id)
-
-        return [note.as_dict() for note in diary_notes]
+        raise BadRequest()
