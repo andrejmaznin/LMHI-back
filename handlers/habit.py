@@ -1,27 +1,26 @@
-from flask import jsonify, request
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
 from werkzeug.exceptions import BadRequest
-
+from modules.json_validator import validate_json
 from models.habit import Habit
 from service import db_session
 
 
-class BetaHabitResource(Resource):
-    def post(self):
-        payload = request.get_json()
+class HabitResource(Resource):
+    @staticmethod
+    @validate_json('habit/post.json')
+    def post(payload):
         session = db_session.create_session()
+
+        habits = [Habit(**i) for i in payload['habits']]
+        session.add_all(habits)
+
         try:
-            habits = [Habit(**i) for i in payload['habits']]
-            habit_names = [i.name for i in habits]
-            print(habits, habit_names)
-            try:
-                session.add_all(habits)
-                session.commit()
-            except IntegrityError:
-                raise BadRequest('Row already exists')
-        except KeyError:
-            raise BadRequest('invalid JSON body')
+            session.commit()
+        except IntegrityError:
+            raise BadRequest('Row already exists')
+
+        return {"habits": len(habits)}
 
     def get(self):
         session = db_session.create_session()

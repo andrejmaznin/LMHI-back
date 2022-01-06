@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_restful import Api
 
-from handlers import (BetaHabitResource, HabitDiaryResource,
+from handlers import (HabitResource, HabitDiaryResource,
                       MoodCriteriaResource, MoodDiaryResource, ServiceResource,
                       TestResultResource, TextDataResource, UserAuthResource,
                       UsersResource)
@@ -16,7 +16,7 @@ api.add_resource(UsersResource, '/users')
 api.add_resource(UserAuthResource, '/auth')
 api.add_resource(TextDataResource, '/result', '/result/<num>')
 api.add_resource(ServiceResource, "/service/<action>")
-api.add_resource(BetaHabitResource, '/beta_habits')
+api.add_resource(HabitResource, '/beta_habits')
 api.add_resource(MoodCriteriaResource, "/mood_criteria")
 api.add_resource(TestResultResource, "/test_result")
 api.add_resource(MoodDiaryResource, "/mood_diary")

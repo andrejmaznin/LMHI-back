@@ -1,4 +1,4 @@
-from handlers.habit import BetaHabitResource
+from handlers.habit import HabitResource
 from handlers.habit_diary import HabitDiaryResource
 from handlers.mood_criteria import MoodCriteriaResource
 from handlers.mood_diary import MoodDiaryResource
@@ -8,7 +8,7 @@ from handlers.interpretation import TextDataResource
 from handlers.users import UserAuthResource, UsersResource
 
 __all__ = [
-    'BetaHabitResource',
+    'HabitResource',
     'MoodCriteriaResource',
     'MoodDiaryResource',
     'ServiceResource',
