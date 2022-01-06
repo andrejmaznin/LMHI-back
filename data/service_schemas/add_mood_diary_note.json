@@ -1,6 +1,0 @@
-{
-  "mood_diary_note": {
-    "user_id": "integer",
-    "result": "array of integers"
-  }
-}

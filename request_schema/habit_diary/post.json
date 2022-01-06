@@ -1,0 +1,7 @@
+{
+  "habit_note": {
+    "user_id": "int",
+    "habit_id": "int",
+    "value": "int"
+  }
+}
