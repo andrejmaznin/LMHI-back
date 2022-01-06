@@ -5,6 +5,8 @@ from flask import jsonify, request
 from flask_restful import Resource
 from werkzeug.exceptions import BadRequest
 
+from models import (Habit, HabitNote, Interpretation, MoodCriteria, MoodDiary,
+                    TestResult, User)
 from models import __all__ as all_models
 from service import db_session
 
