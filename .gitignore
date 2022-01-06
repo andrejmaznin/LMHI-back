@@ -10,3 +10,4 @@ test.py
 .idea/workspace.xml
 service/db_session.py
 .DS_Store
+service/db_session.py
