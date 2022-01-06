@@ -1,5 +1,5 @@
 {
   "login": "str",
-  "action": "str",
-  "id": "int"
+  "hashed_password": "str",
+  "action": "str"
 }
