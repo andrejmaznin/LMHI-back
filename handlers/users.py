@@ -16,11 +16,10 @@ class UsersResource(Resource):
     def post(payload):
         session = db_session.create_session()
 
+        user = User(**payload)
+        session.add(user)
         try:
-            user = User(**payload)
-            session.add(user)
             session.commit()
-
         except IntegrityError:
             raise BadRequest()
 

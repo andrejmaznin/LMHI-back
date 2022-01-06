@@ -12,10 +12,11 @@ class MoodCriteriaResource(Resource):
     @validate_json('mood_criteria/post.json')
     def post(payload):
         session = db_session.create_session()
-        criterias = [MoodCriteria(**i) for i in payload['mood_criterias']]
+
+        criterias = [MoodCriteria(**criteria) for criteria in payload['mood_criterias']]
+        session.add_all(criterias)
 
         try:
-            session.add_all(criterias)
             session.commit()
         except IntegrityError:
             raise BadRequest('Row already exists')
@@ -23,4 +24,5 @@ class MoodCriteriaResource(Resource):
     @staticmethod
     def get():
         session = db_session.create_session()
+
         return [i.as_dict() for i in session.query(MoodCriteria).all()]

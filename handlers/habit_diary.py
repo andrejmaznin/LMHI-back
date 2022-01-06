@@ -13,9 +13,10 @@ class HabitDiaryResource(Resource):
     def post(payload):
         session = db_session.create_session()
 
+        habit_diary_note = HabitNote(**payload['habit_note'])
+
+        session.add(habit_diary_note)
         try:
-            habit_diary_note = HabitNote(**payload['habit_note'])
-            session.add(habit_diary_note)
             session.commit()
         except IntegrityError:
             raise BadRequest('No user found')

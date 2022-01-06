@@ -32,20 +32,18 @@ class TextDataResource(Resource):
         if num:
             entities = payload["payload"]
             entities = [Interpretation(code=i["code"], info=i["info"]) for i in entities]
+            session.add_all(entities)
 
             try:
-                session.add_all(entities)
                 session.commit()
             except IntegrityError:
                 raise BadRequest("Row already exists")
 
-            return {'success': 'OK', "rows": len(entities)}
-
-        data = Interpretation(code=payload["code"], info=payload["info"])
-
-        try:
+        else:
+            data = Interpretation(**payload)
             session.add(data)
-        except IntegrityError:
-            raise BadRequest("Row already exists")
 
-        return {"row": session.query(Interpretation).get(payload["code"]).as_dict()}
+            try:
+                session.commit()
+            except IntegrityError:
+                raise BadRequest("Row already exists")

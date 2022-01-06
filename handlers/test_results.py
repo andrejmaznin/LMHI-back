@@ -12,10 +12,11 @@ class TestResultResource(Resource):
     @validate_json('test_result/post.json')
     def post(payload):
         session = db_session.create_session()
+        test_result = TestResult(**payload['test_result'])
 
         try:
-            test_result = TestResult(**payload['test_result'])
             session.merge(test_result)
-            return {"id": test_result.id}
         except IntegrityError:
             raise BadRequest()
+
+        return {"id": test_result.id}
