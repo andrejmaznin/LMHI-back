@@ -24,14 +24,7 @@ class UsersResource(Resource):
         except IntegrityError:
             raise BadRequest()
 
-        response = jsonify(
-            {
-                'success': 'OK',
-                "id": user.id
-            }
-        )
-        response.status_code = 201
-        return response
+        return {"id": user.id}
 
     @staticmethod
     def get():
@@ -87,9 +80,8 @@ class UserAuthResource(Resource):
                 user.session = user.session + [auth.id] if user.session else [auth.id]
                 session.commit()
 
-                response = jsonify({"session_id": auth.id, 'success': 'OK'})
-                response.status_code = 201
-                return response
+                return {"session_id": auth.id}
+
             raise BadRequest()
 
         elif payload["action"] == "exit":
@@ -98,10 +90,6 @@ class UserAuthResource(Resource):
                 if auth_session.user_id == user.id:
                     session.query(Session).filter_by(id=payload["id"]).delete()
                     session.commit()
-
-                    response = jsonify({'success': 'OK'})
-                    response.status_code = 201
-                    return response
 
             raise BadRequest()
         raise BadRequest()
@@ -113,6 +101,4 @@ class UserAuthResource(Resource):
         sessions = [{"id": i.id, "user_id": i.user_id} for i in
                     session.query(Session).all()]
 
-        response = jsonify({"sessions": sessions, 'success': 'OK'})
-        response.status_code = 201
-        return response
+        return {"sessions": sessions}

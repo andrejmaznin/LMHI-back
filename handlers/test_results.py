@@ -1,4 +1,4 @@
-from flask import jsonify
+from sqlalchemy.exc import IntegrityError
 from flask_restful import Resource
 from werkzeug.exceptions import BadRequest
 
@@ -13,28 +13,9 @@ class TestResultResource(Resource):
     def post(payload):
         session = db_session.create_session()
 
-        test_result = TestResult(**payload['test_result'])
-
-        if result_id := getattr(
-                test_result,
-                "id",
-                None
-        ):
-            if unfinished := session.query(TestResult).get(result_id):
-                unfinished.result = test_result.result
-                unfinished.finished = test_result.finished
-                session.commit()
-
-                response = jsonify({'success': 'OK', "id": result_id})
-                response.status_code = 201
-                return response
-
-            else:
-                raise BadRequest()
-
-        session.add(test_result)
-        session.commit()
-
-        response = jsonify({'success': 'OK', "id": test_result.id})
-        response.status_code = 201
-        return response
+        try:
+            test_result = TestResult(**payload['test_result'])
+            session.merge(test_result)
+            return {"id": test_result.id}
+        except IntegrityError:
+            raise BadRequest()

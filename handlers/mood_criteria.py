@@ -13,9 +13,7 @@ class MoodCriteriaResource(Resource):
     @validate_json('mood_criteria/post.json')
     def post(payload):
         session = db_session.create_session()
-
         criterias = [MoodCriteria(**i) for i in payload['mood_criterias']]
-        names = [i.name for i in criterias]
 
         try:
             session.add_all(criterias)
@@ -23,22 +21,7 @@ class MoodCriteriaResource(Resource):
         except IntegrityError:
             raise BadRequest('Row already exists')
 
-        response = jsonify(
-            {
-                'success': 'OK',
-                "row": len(
-                    list(
-                        filter(
-                            lambda a: a.name in names, session.query(MoodCriteria).all()
-                        )
-                    )
-                )
-            }
-        )
-        response.status_code = 201
-        return response
-
-    def get(self):
+    @staticmethod
+    def get():
         session = db_session.create_session()
-
         return [i.as_dict() for i in session.query(MoodCriteria).all()]

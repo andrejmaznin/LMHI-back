@@ -96,6 +96,4 @@ class ServiceResource(Resource):
                 session.add_all(models)
                 session.commit()
 
-                response = jsonify({'success': 'OK', "added": number})
-                response.status_code = 201
-                return response
+                return {"added": number}

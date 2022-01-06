@@ -17,6 +17,4 @@ class MoodDiaryResource(Resource):
         session.add(mood_diary_note)
         session.commit()
 
-        response = jsonify({'success': 'OK', "id": mood_diary_note.id})
-        response.status_code = 201
-        return response
+        return {"id": mood_diary_note.id}

@@ -1,4 +1,4 @@
-from flask import jsonify, request
+from flask import jsonify
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
 from werkzeug.exceptions import BadRequest
@@ -21,9 +21,7 @@ class HabitDiaryResource(Resource):
         except IntegrityError:
             raise BadRequest('No user found')
 
-        response = jsonify({'success': 'OK', "id": habit_diary_note.id})
-        response.status_code = 201
-        return response
+        return {"id": habit_diary_note.id}
 
     @staticmethod
     def get(user_id: int = None):
@@ -34,6 +32,4 @@ class HabitDiaryResource(Resource):
         else:
             habit_notes = session.query(HabitNote).all()
 
-        response = jsonify({'success': 'OK', "habit_notes": [note.as_dict() for note in habit_notes]})
-        response.status_code = 201
-        return response
+        return {"habit_notes": [note.as_dict() for note in habit_notes]}

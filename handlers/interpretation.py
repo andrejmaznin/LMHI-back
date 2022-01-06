@@ -10,7 +10,7 @@ from service import db_session
 class TextDataResource(Resource):
     # url?red=xxxx&green=xxxx&blue=xxxx&yellow=xxxx&main=xxxx
     @staticmethod
-    def get(num: str = None):
+    def get():
         session = db_session.create_session()
         ans = {}
         args = request.args
@@ -22,9 +22,7 @@ class TextDataResource(Resource):
             else:
                 ans[i] = "ERROR"
 
-        response = jsonify({'success': 'OK', "result": ans})
-        response.status_code = 201
-        return response
+        return {"result": ans}
 
     @staticmethod
     def post(num: str = None):
@@ -41,9 +39,7 @@ class TextDataResource(Resource):
             except IntegrityError:
                 raise BadRequest("Row already exists")
 
-            response = jsonify({'success': 'OK', "rows": len(entities)})
-            response.status_code = 201
-            return response
+            return {'success': 'OK', "rows": len(entities)}
 
         data = Interpretation(code=payload["code"], info=payload["info"])
 
@@ -52,7 +48,4 @@ class TextDataResource(Resource):
         except IntegrityError:
             raise BadRequest("Row already exists")
 
-        response = jsonify({'success': 'OK', "row": session.query(Interpretation).get(payload["code"]).as_dict()})
-        response.status_code = 201
-        session.commit()
-        return response
+        return {"row": session.query(Interpretation).get(payload["code"]).as_dict()}

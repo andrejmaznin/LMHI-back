@@ -23,21 +23,6 @@ class BetaHabitResource(Resource):
         except KeyError:
             raise BadRequest('invalid JSON body')
 
-        response = jsonify(
-            {
-                'success': 'OK',
-                "row": len(
-                    list(
-                        filter(
-                            lambda a: a.name in habit_names, session.query(Habit).all()
-                        )
-                    )
-                )
-            }
-        )
-        response.status_code = 201
-        return response
-
     def get(self):
         session = db_session.create_session()
 
