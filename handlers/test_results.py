@@ -17,6 +17,7 @@ class TestResultResource(Resource):
 
         try:
             session.merge(test_result)
+            session.commit()
         except IntegrityError:
             raise BadRequest()
 
