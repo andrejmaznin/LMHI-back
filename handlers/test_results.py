@@ -16,7 +16,7 @@ class TestResultResource(Resource):
         test_result = TestResult(**payload['test_result'])
 
         try:
-            session.merge(test_result)
+            session.add(test_result)
             session.commit()
         except IntegrityError:
             raise BadRequest()
