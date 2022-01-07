@@ -1,7 +1,6 @@
 {
   "test_result": {
     "id": "int",
-    "user_id": "int",
     "finished": "bool",
     "result": [
       "int"
