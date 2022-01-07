@@ -22,7 +22,7 @@ def validate_json(schema: str = None):
                 except AssertionError:
                     raise BadRequest(str(payload))
 
-                response = jsonify(handler(payload))
+                response = jsonify(handler(payload, request.headers.get('token')))
             else:
                 response = handler()
 

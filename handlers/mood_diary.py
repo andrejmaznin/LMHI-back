@@ -10,10 +10,11 @@ from service import db_session
 class MoodDiaryResource(Resource):
     @staticmethod
     @validate_json('mood_diary/post.json')
-    def post(payload):
+    def post(payload, token):
         session = db_session.create_session()
 
         mood_diary_note = MoodDiary(**payload['mood_diary_note'])
+        mood_diary_note.user_id = session.query(User).filter(User.token == token).one().id
 
         session.add(mood_diary_note)
         session.commit()

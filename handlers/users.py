@@ -15,15 +15,15 @@ from service import db_session
 class UsersResource(Resource):
     @staticmethod
     @validate_json('user/post.json')
-    def post(payload):
+    def post(payload, token):
         session = db_session.create_session()
 
         user = User(**payload, token=uuid4())
         session.add(user)
         try:
             session.commit()
-        except IntegrityError:
-            raise BadRequest('IntegrityError')
+        except IntegrityError as error:
+            raise BadRequest(error.code)
 
         return {"token": user.token}
 
@@ -33,13 +33,11 @@ class UsersResource(Resource):
 
         users = [user.as_dict() for user in session.query(User).all()]
 
-        response = jsonify({"users": users, 'success': 'OK'})
-        response.status_code = 201
-        return response
+        return {"users": users}
 
     @staticmethod
     @validate_json('user/patch.json')
-    def patch(payload):
+    def patch(payload, token):
         session = db_session.create_session()
 
         data = payload["data"]  # все, что нужно изменить
@@ -62,7 +60,7 @@ class UsersResource(Resource):
 class UserAuthResource(Resource):
     @staticmethod
     @validate_json('user/auth/post.json')
-    def post(payload):
+    def post(payload, token):
         session = db_session.create_session()
         try:
             user = session.query(User).filter(

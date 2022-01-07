@@ -11,9 +11,11 @@ from service import db_session
 class TestResultResource(Resource):
     @staticmethod
     @validate_json('test_result/post.json')
-    def post(payload):
+    def post(payload, token):
         session = db_session.create_session()
+
         test_result = TestResult(**payload['test_result'])
+        test_result.user_id = session.query(User).filter(User.token == token).one().id
 
         try:
             session.add(test_result)

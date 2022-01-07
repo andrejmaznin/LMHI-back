@@ -11,13 +11,14 @@ from service import db_session
 class HabitDiaryResource(Resource):
     @staticmethod
     @validate_json('habit_diary/post.json')
-    def post(payload):
+    def post(payload, token):
         session = db_session.create_session()
 
         habit_diary_note = HabitNote(**payload['habit_note'])
+        habit_diary_note.user_id = session.query(User).filter(User.token == token).one().id
 
-        session.add(habit_diary_note)
         try:
+            session.add(habit_diary_note)
             session.commit()
         except IntegrityError:
             raise BadRequest('No user found')

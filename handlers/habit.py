@@ -10,7 +10,7 @@ from service import db_session
 class HabitResource(Resource):
     @staticmethod
     @validate_json('habit/post.json')
-    def post(payload):
+    def post(payload, token):
         session = db_session.create_session()
 
         habits = [Habit(**i) for i in payload['habits']]

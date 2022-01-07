@@ -10,7 +10,7 @@ from service import db_session
 class MoodCriteriaResource(Resource):
     @staticmethod
     @validate_json('mood_criteria/post.json')
-    def post(payload):
+    def post(payload, token):
         session = db_session.create_session()
 
         criterias = [MoodCriteria(**criteria) for criteria in payload['mood_criterias']]
