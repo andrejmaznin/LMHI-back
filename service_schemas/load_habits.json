@@ -55,6 +55,13 @@
       "lower": 1,
       "upper": 4,
       "value": "servings"
+    },
+    {
+      "name": "Meditate",
+      "boolean": false,
+      "lower": 5,
+      "upper": 20,
+      "value": "minutes"
     }
   ]
 }
