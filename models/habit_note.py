@@ -15,7 +15,7 @@ class HabitNote(SqlAlchemyBase):
     habit_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("habits.id"))
     habit = orm.relation("Habit")
     value = sqlalchemy.Column(sqlalchemy.Integer, nullable=False)
-    date = sqlalchemy.Column(sqlalchemy.DateTime, nullable=False, default=datetime.now().timestamp())
+    date = sqlalchemy.Column(sqlalchemy.Integer, nullable=False, default=int(datetime.utcnow().timestamp()))
 
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}

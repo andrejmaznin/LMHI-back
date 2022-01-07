@@ -13,7 +13,7 @@ class MoodDiary(SqlAlchemyBase):
     user_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("users.id"))
     user = orm.relation('User')
     result = sqlalchemy.Column(sqlalchemy.ARRAY(item_type=sqlalchemy.Integer), nullable=True)
-    date = sqlalchemy.Column(sqlalchemy.Float, nullable=False, default=datetime.now().timestamp())
+    date = sqlalchemy.Column(sqlalchemy.Integer, nullable=False, default=int(datetime.utcnow().timestamp()))
 
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
