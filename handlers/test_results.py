@@ -31,12 +31,13 @@ class TestResultResource(Resource):
     def get():
         session = db_session.create_session()
         test_result_id = request.args.get('id')
+
         if test_result_id is not None:
             response = {}
             test_result = session.query(TestResult).get(test_result_id).result
             for i in range(len(test_result)):
-                interpretation = session.query(Interpretation).get(BLOCKS[i] + '/' + test_result[i])
-                response[BLOCKS[i]] = interpretation
+                print(BLOCKS[i] + '/' + test_result[i])
+                response[BLOCKS[i]] = session.query(Interpretation).get(BLOCKS[i] + '/' + test_result[i]).info
 
             return response
 
