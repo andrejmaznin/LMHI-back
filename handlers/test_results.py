@@ -3,9 +3,11 @@ from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
 from werkzeug.exceptions import BadRequest
 
-from models import TestResult, User
+from models import Interpretation, TestResult, User
 from modules.json_validator import validate_json
 from service import db_session
+
+BLOCKS = ['main', 'blue', 'green', 'red', 'yellow']
 
 
 class TestResultResource(Resource):
@@ -28,6 +30,15 @@ class TestResultResource(Resource):
     @staticmethod
     def get():
         session = db_session.create_session()
+        test_result_id = request.args.get('id')
+        if test_result_id is not None:
+            response = {}
+            test_result = session.query(TestResult).get(test_result_id).result
+            for i in range(len(test_result)):
+                interpretation = session.query(Interpretation).get(BLOCKS[i] + '/' + test_result[i])
+                response[BLOCKS[i]] = interpretation
+
+            return response
 
         token = request.headers.get('token')
         if token is None:
