@@ -23,7 +23,7 @@ class UsersResource(Resource):
         try:
             session.commit()
         except IntegrityError:
-            raise BadRequest()
+            raise BadRequest('IntegrityError')
 
         return {"token": user.token}
 
