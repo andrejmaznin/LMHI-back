@@ -20,7 +20,7 @@ def validate_json(schema: str = None):
                 try:
                     validate_payload(payload=payload, schema=target_schema)
                 except AssertionError:
-                    raise BadRequest()
+                    raise BadRequest(str(payload))
 
                 response = jsonify(handler(payload))
             else:
