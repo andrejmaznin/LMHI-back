@@ -27,6 +27,9 @@ class TestResultResource(Resource):
         session = db_session.create_session()
 
         token = request.headers.get('token')
+        if token is None:
+            return [result.as_dict() for result in session.query(TestResult).all()]
+
         user = session.query(User).filter(User.token == token).first()
         if user is not None:
             test_results = session.query(TestResult).filter(TestResult.user_id == user.id)
