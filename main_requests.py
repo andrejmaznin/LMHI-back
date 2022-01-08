@@ -1,17 +1,16 @@
+import os
+
 from flask import Flask
 from flask_migrate import Migrate
 from flask_restful import Api
-from flask_sqlalchemy import SQLAlchemy
 
 from handlers import (HabitDiaryResource, HabitResource, MoodCriteriaResource,
                       MoodDiaryResource, ServiceResource, TestResultResource,
                       TextDataResource, UserAuthResource, UsersResource)
-from service import db_session
+from service import db_session, load_data
 
 app = Flask(__name__)
 api = Api(app)
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
 
 db_session.global_init()
 

@@ -30,8 +30,7 @@ class TextDataResource(Resource):
         payload = request.get_json(force=True)
 
         if num:
-            entities = payload["payload"]
-            entities = [Interpretation(code=i["code"], info=i["info"]) for i in entities]
+            entities = [Interpretation(code=code, info=info) for code, info in payload.items()]
             session.add_all(entities)
 
             try:
