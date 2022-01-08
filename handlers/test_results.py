@@ -35,9 +35,9 @@ class TestResultResource(Resource):
         if test_result_id is not None:
             response = {}
             test_result = session.query(TestResult).get(test_result_id).result
-            for i in range(len(test_result)):
-                print(BLOCKS[i] + '/' + test_result[i])
-                response[BLOCKS[i]] = session.query(Interpretation).get(BLOCKS[i] + '/' + test_result[i]).info
+            
+            for i in range(test_result):
+                response[BLOCKS[i]] = session.query(Interpretation).get(i).info
 
             return response
 

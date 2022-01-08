@@ -2,7 +2,7 @@
   "test_result": {
     "finished": "bool",
     "result": [
-      "int"
+      "str"
     ]
   }
 }
