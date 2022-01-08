@@ -34,10 +34,11 @@ class TestResultResource(Resource):
 
         if test_result_id is not None:
             response = {}
-            test_result = session.query(TestResult).get(test_result_id).result
-            
-            for i in range(test_result):
-                response[BLOCKS[i]] = session.query(Interpretation).get(i).info
+
+            test_result = session.query(TestResult).get(test_result_id)
+
+            for i in BLOCKS:
+                response[i] = eval(f'test_result.{i}')
 
             return response
 

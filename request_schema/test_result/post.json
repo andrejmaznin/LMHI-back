@@ -1,8 +1,10 @@
 {
   "test_result": {
     "finished": "bool",
-    "result": [
-      "str"
-    ]
+    "main": "str",
+    "blue": "str",
+    "green": "str",
+    "red": "str",
+    "yellow": "str"
   }
 }

@@ -13,7 +13,13 @@ class TestResult(SqlAlchemyBase):
     user_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("users.id"))
     user = orm.relation('User')
     finished = sqlalchemy.Column(sqlalchemy.Boolean, default=False)
-    result = sqlalchemy.Column(sqlalchemy.ARRAY(item_type=sqlalchemy.String), nullable=True)
+
+    main = sqlalchemy.Column(sqlalchemy.String)
+    blue = sqlalchemy.Column(sqlalchemy.String)
+    green = sqlalchemy.Column(sqlalchemy.String)
+    red = sqlalchemy.Column(sqlalchemy.String)
+    yellow = sqlalchemy.Column(sqlalchemy.String)
+
     date = sqlalchemy.Column(sqlalchemy.Integer, nullable=False, default=int(datetime.now().timestamp()))
 
     def as_dict(self):
