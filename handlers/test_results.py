@@ -38,7 +38,7 @@ class TestResultResource(Resource):
             test_result = session.query(TestResult).get(test_result_id)
 
             for i in BLOCKS:
-                response[i] = eval(f'test_result.{i}')
+                response[i] = session.query(Interpretation).get(eval(f'test_result.{i}')).info
 
             return response
 
