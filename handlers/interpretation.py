@@ -14,15 +14,17 @@ class TextDataResource(Resource):
         session = db_session.create_session()
         ans = {}
         args = request.args
-        for i in args.keys():
-            code = i + "/" + args[i]
-            text = session.query(Interpretation).get(code)
-            if text is not None:
-                ans[i] = text.info
-            else:
-                ans[i] = "ERROR"
+        if args is not None:
+            for i in args.keys():
+                code = i + "/" + args[i]
+                text = session.query(Interpretation).get(code)
+                if text is not None:
+                    ans[i] = text.info
+                else:
+                    ans[i] = "ERROR"
 
-        return {"result": ans}
+            return {"result": ans}
+        return [i.as_dict() for i in session.query(Interpretation).all()]
 
     @staticmethod
     def post(num: str = None):

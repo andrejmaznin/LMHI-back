@@ -2,7 +2,7 @@ import json
 
 from requests import post
 
-BASE_URL = 'http://localhost:8080'
+BASE_URL = 'https://luscherian.herokuapp.com'
 
 
 def load_mood_criterias(base_path: str = ''):
@@ -30,3 +30,6 @@ def main(base_path: str = ''):
     load_mood_criterias(base_path)
     load_habits(base_path)
     load_interpretations(base_path)
+
+
+main('../')

@@ -34,12 +34,17 @@ class TestResultResource(Resource):
 
         if test_result_id is not None:
             response = {}
-
+            r = []
             test_result = session.query(TestResult).get(test_result_id)
 
             for i in BLOCKS:
-                response[i] = session.query(Interpretation).get(f'{i}/' + eval(f'test_result.{i}')).info
+                interpretation = session.query(Interpretation).get(f'{i}/' + eval(f'test_result.{i}'))
 
+                if interpretation is not None:
+                    response[i] = session.query(Interpretation).get(f'{i}/' + eval(f'test_result.{i}')).info
+                else:
+                    response[i] = None
+                    
             return response
 
         token = request.headers.get('token')
