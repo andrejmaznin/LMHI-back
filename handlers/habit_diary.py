@@ -13,7 +13,7 @@ class HabitDiaryResource(Resource):
     def post(payload, token):
         from main_requests import session
         user_id = session.query(User).filter(User.token == token).one().id
-        habit_diary_notes = [HabitNote(user_id, **note) for note in payload]
+        habit_diary_notes = [HabitNote(user_id=user_id, **note) for note in payload]
 
         try:
             session.add_all(habit_diary_notes)
