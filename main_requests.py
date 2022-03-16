@@ -1,18 +1,16 @@
-import os
-
 from flask import Flask
-from flask_migrate import Migrate
 from flask_restful import Api
 
 from handlers import (HabitDiaryResource, HabitResource, MoodCriteriaResource,
                       MoodDiaryResource, ServiceResource, TestResultResource,
                       TextDataResource, UserAuthResource, UsersResource)
-from service import db_session, load_data
+from service import db_session
 
 app = Flask(__name__)
 api = Api(app)
 
 db_session.global_init()
+session = db_session.create_session()
 
 api.add_resource(UsersResource, '/users')
 api.add_resource(UserAuthResource, '/auth')

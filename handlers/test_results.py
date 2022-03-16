@@ -5,7 +5,6 @@ from werkzeug.exceptions import BadRequest
 
 from models import Interpretation, TestResult, User
 from modules.json_validator import validate_json
-from service import db_session
 
 BLOCKS = ['main', 'blue', 'green', 'red', 'yellow']
 
@@ -14,7 +13,7 @@ class TestResultResource(Resource):
     @staticmethod
     @validate_json('test_result/post.json')
     def post(payload, token):
-        session = db_session.create_session()
+        from main_requests import session
 
         test_result = TestResult(**payload['test_result'])
         test_result.user_id = session.query(User).filter(User.token == token).one().id
@@ -29,7 +28,8 @@ class TestResultResource(Resource):
 
     @staticmethod
     def get():
-        session = db_session.create_session()
+        from main_requests import session
+
         test_result_id = request.args.get('id')
 
         if test_result_id is not None:
@@ -44,7 +44,7 @@ class TestResultResource(Resource):
                     response[i] = session.query(Interpretation).get(f'{i}/' + eval(f'test_result.{i}')).info
                 else:
                     response[i] = None
-                    
+
             return response
 
         token = request.headers.get('token')

@@ -4,14 +4,13 @@ from werkzeug.exceptions import BadRequest
 
 from models.habit import Habit
 from modules.json_validator import validate_json
-from service import db_session
 
 
 class HabitResource(Resource):
     @staticmethod
     @validate_json('habit/post.json')
     def post(payload, token):
-        session = db_session.create_session()
+        from main_requests import session
 
         habits = [Habit(**i) for i in payload['habits']]
         session.add_all(habits)
@@ -23,6 +22,6 @@ class HabitResource(Resource):
 
     @staticmethod
     def get():
-        session = db_session.create_session()
+        from main_requests import session
 
         return [i.as_dict() for i in session.query(Habit).all()]

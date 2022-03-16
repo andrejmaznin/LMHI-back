@@ -4,14 +4,13 @@ from werkzeug.exceptions import BadRequest
 
 from models import MoodDiary, User
 from modules.json_validator import validate_json
-from service import db_session
 
 
 class MoodDiaryResource(Resource):
     @staticmethod
     @validate_json('mood_diary/post.json')
     def post(payload, token):
-        session = db_session.create_session()
+        from main_requests import session
 
         mood_diary_note = MoodDiary(**payload['mood_diary_note'])
         mood_diary_note.user_id = session.query(User).filter(User.token == token).one().id
@@ -23,7 +22,7 @@ class MoodDiaryResource(Resource):
 
     @staticmethod
     def get():
-        session = db_session.create_session()
+        from main_requests import session
 
         token = request.headers.get('token')
         user = session.query(User).filter(User.token == token).first()

@@ -1,6 +1,5 @@
 from uuid import uuid4
 
-from flask import jsonify
 from flask_restful import Resource
 from sqlalchemy import or_
 from sqlalchemy.exc import IntegrityError, NoResultFound
@@ -9,14 +8,13 @@ from werkzeug.exceptions import BadRequest
 from models.session import Session
 from models.user import User
 from modules.json_validator import validate_json
-from service import db_session
 
 
 class UsersResource(Resource):
     @staticmethod
     @validate_json('user/post.json')
     def post(payload, token):
-        session = db_session.create_session()
+        from main_requests import session
 
         user = User(**payload, token=uuid4())
         session.add(user)
@@ -29,7 +27,7 @@ class UsersResource(Resource):
 
     @staticmethod
     def get():
-        session = db_session.create_session()
+        from main_requests import session
 
         users = [user.as_dict() for user in session.query(User).all()]
 
@@ -38,7 +36,7 @@ class UsersResource(Resource):
     @staticmethod
     @validate_json('user/patch.json')
     def patch(payload, token):
-        session = db_session.create_session()
+        from main_requests import session
 
         data = payload["data"]  # все, что нужно изменить
 
@@ -61,7 +59,8 @@ class UserAuthResource(Resource):
     @staticmethod
     @validate_json('user/auth/post.json')
     def post(payload, token):
-        session = db_session.create_session()
+        from main_requests import session
+
         try:
             user = session.query(User).filter(
                 or_(User.email == payload["login"], User.phone == payload["login"],
@@ -95,7 +94,7 @@ class UserAuthResource(Resource):
 
     @staticmethod
     def get():
-        session = db_session.create_session()
+        from main_requests import session
 
         sessions = [{"id": i.id, "user_id": i.user_id} for i in
                     session.query(Session).all()]

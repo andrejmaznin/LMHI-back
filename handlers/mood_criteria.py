@@ -4,14 +4,13 @@ from werkzeug.exceptions import BadRequest
 
 from models.mood_criteria import MoodCriteria
 from modules.json_validator import validate_json
-from service import db_session
 
 
 class MoodCriteriaResource(Resource):
     @staticmethod
     @validate_json('mood_criteria/post.json')
     def post(payload, token):
-        session = db_session.create_session()
+        from main_requests import session
 
         criterias = [MoodCriteria(**criteria) for criteria in payload['mood_criterias']]
         session.add_all(criterias)
@@ -23,6 +22,6 @@ class MoodCriteriaResource(Resource):
 
     @staticmethod
     def get():
-        session = db_session.create_session()
+        from main_requests import session
 
         return [i.as_dict() for i in session.query(MoodCriteria).all()]

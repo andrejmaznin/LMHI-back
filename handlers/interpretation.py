@@ -4,14 +4,14 @@ from sqlalchemy.exc import IntegrityError
 from werkzeug.exceptions import BadRequest
 
 from models.text_data import Interpretation
-from service import db_session
 
 
 class TextDataResource(Resource):
     # url?red=xxxx&green=xxxx&blue=xxxx&yellow=xxxx&main=xxxx
     @staticmethod
     def get():
-        session = db_session.create_session()
+        from main_requests import session
+
         ans = {}
         args = request.args
         if args is not None:
@@ -28,7 +28,8 @@ class TextDataResource(Resource):
 
     @staticmethod
     def post(num: str = None):
-        session = db_session.create_session()
+        from main_requests import session
+
         payload = request.get_json(force=True)
 
         if num:

@@ -15,7 +15,7 @@ def global_init():
     if __factory:
         return
 
-    conn_str = "postgresql" + os.environ['DATABASE_URL'].lstrip("postgres")
+    conn_str = 'postgresql://postgres:root@localhost:5432/lmhi'
     print(f"Подключение к базе данных по адресу {conn_str}")
 
     engine = sa.create_engine(conn_str, echo=False)

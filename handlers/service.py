@@ -8,7 +8,6 @@ from werkzeug.exceptions import BadRequest
 
 from models import *
 from models import __all__ as all_models
-from service import db_session
 
 max_used_int = 0
 
@@ -39,7 +38,8 @@ def value_by_template(template):
 class ServiceResource(Resource):
     @staticmethod
     def get(action):
-        session = db_session.create_session()
+        from main_requests import session
+
         args = request.args
 
         if action == 'clean_table':
