@@ -39,6 +39,7 @@ class TextDataResource(Resource):
             try:
                 session.commit()
             except IntegrityError:
+                session.rollback()
                 raise BadRequest("Row already exists")
 
         else:

@@ -21,6 +21,7 @@ class UsersResource(Resource):
         try:
             session.commit()
         except IntegrityError:
+            session.rollback()
             raise BadRequest('Credentials taken')
 
         return {"token": user.token}

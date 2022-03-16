@@ -20,6 +20,7 @@ class HabitDiaryResource(Resource):
             session.add(habit_diary_note)
             session.commit()
         except IntegrityError:
+            session.rollback()
             raise BadRequest('No user found')
 
         return {"id": habit_diary_note.id}

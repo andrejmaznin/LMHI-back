@@ -22,6 +22,7 @@ class TestResultResource(Resource):
             session.add(test_result)
             session.commit()
         except IntegrityError:
+            session.rollback()
             raise BadRequest()
 
         return {"id": test_result.id}
