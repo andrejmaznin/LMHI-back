@@ -2,7 +2,7 @@ import json
 
 from requests import post
 
-BASE_URL = 'https://luscherian.herokuapp.com'
+BASE_URL = 'https://iluscherian.herokuapp.com'
 
 
 def load_mood_criterias(base_path: str = ''):

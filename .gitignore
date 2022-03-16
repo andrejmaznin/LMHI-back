@@ -1,13 +1,6 @@
-
+.idea
 *.pyc
 test.py
-.idea/inspectionProfiles/profiles_settings.xml
-.idea/inspectionProfiles/Project_Default.xml
-.idea/LMHI-back.iml
-.idea/misc.xml
-.idea/vcs.xml
-.idea/modules.xml
-.idea/workspace.xml
 service/db_session.py
 .DS_Store
 service/db_session.py
