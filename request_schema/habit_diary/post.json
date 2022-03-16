@@ -1,6 +1,6 @@
-{
-  "habit_note": {
+[
+  {
     "habit_id": "int",
     "value": "int"
   }
-}
+]

@@ -12,18 +12,17 @@ class HabitDiaryResource(Resource):
     @validate_json('habit_diary/post.json')
     def post(payload, token):
         from main_requests import session
-
-        habit_diary_note = HabitNote(**payload['habit_note'])
-        habit_diary_note.user_id = session.query(User).filter(User.token == token).one().id
+        user_id = session.query(User).filter(User.token == token).one().id
+        habit_diary_notes = [HabitNote(user_id, **note) for note in payload]
 
         try:
-            session.add(habit_diary_note)
+            session.add_all(habit_diary_notes)
             session.commit()
         except IntegrityError:
             session.rollback()
             raise BadRequest('No user found')
 
-        return {"id": habit_diary_note.id}
+        return [note.id for note in habit_diary_notes]
 
     @staticmethod
     def get():
