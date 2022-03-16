@@ -30,9 +30,12 @@ class HabitDiaryResource(Resource):
         from main_requests import session
 
         token = request.headers.get('token')
+        if not token:
+            raise BadRequest('No token provided')
+
         user = session.query(User).filter(User.token == token).first()
         if user is not None:
             diary_notes = session.query(HabitNote).filter(HabitNote.user_id == user.id)
             return [note.as_dict() for note in diary_notes]
 
-        raise BadRequest()
+        raise BadRequest('No user for token')
