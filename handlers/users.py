@@ -20,8 +20,8 @@ class UsersResource(Resource):
         session.add(user)
         try:
             session.commit()
-        except IntegrityError as error:
-            raise BadRequest(error.code)
+        except IntegrityError:
+            raise BadRequest('Credentials taken')
 
         return {"token": user.token}
 
