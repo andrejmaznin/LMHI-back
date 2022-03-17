@@ -5,13 +5,14 @@ from werkzeug.exceptions import BadRequest
 
 from models import Interpretation, TestResult, User
 from modules.json_validator import validate_json
+from request_schema import test_result
 
 BLOCKS = ['main', 'blue', 'green', 'red', 'yellow']
 
 
 class TestResultResource(Resource):
     @staticmethod
-    @validate_json('test_result/post.json')
+    @validate_json(test_result)
     def post(payload, token):
         from main_requests import session
 

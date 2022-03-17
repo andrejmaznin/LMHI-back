@@ -5,11 +5,12 @@ from werkzeug.exceptions import BadRequest
 
 from models import HabitNote, User
 from modules.json_validator import validate_json
+from request_schema import habit_diary
 
 
 class HabitDiaryResource(Resource):
     @staticmethod
-    @validate_json('habit_diary/post.json')
+    @validate_json(habit_diary)
     def post(payload, token):
         from main_requests import session
         user_id = session.query(User).filter(User.token == token).one().id

@@ -1,15 +1,15 @@
 def validate_payload(payload, schema):
     if type(payload) is None:
-        assert schema == 'None'
+        assert schema is None
 
     if type(payload) == bool:
-        assert schema == 'bool'
+        assert schema is bool
 
     if type(payload) == int:
-        assert schema == 'int'
+        assert schema is int
 
     if type(payload) == str:
-        assert schema == 'str'
+        assert schema is str
 
     if type(payload) == dict:
         if not schema.keys():

@@ -1,3 +1,5 @@
+import logging
+
 from flask import Flask
 from flask_restful import Api
 
@@ -6,6 +8,7 @@ from handlers import (HabitDiaryResource, HabitResource, MoodCriteriaResource,
                       TextDataResource, UserAuthResource, UsersResource)
 from service import db_session
 
+logger = logging.getLogger(__name__)
 app = Flask(__name__)
 api = Api(app)
 

@@ -8,11 +8,12 @@ from werkzeug.exceptions import BadRequest
 from models.session import Session
 from models.user import User
 from modules.json_validator import validate_json
+from request_schema.user import user_data, auth
 
 
 class UsersResource(Resource):
     @staticmethod
-    @validate_json('user/post.json')
+    @validate_json(user_data)
     def post(payload, token):
         from main_requests import session
 
@@ -35,7 +36,7 @@ class UsersResource(Resource):
         return {"users": users}
 
     @staticmethod
-    @validate_json('user/patch.json')
+    @validate_json(user_data)
     def patch(payload, token):
         from main_requests import session
 
@@ -58,7 +59,7 @@ class UsersResource(Resource):
 
 class UserAuthResource(Resource):
     @staticmethod
-    @validate_json('user/auth/post.json')
+    @validate_json(auth)
     def post(payload, token):
         from main_requests import session
 

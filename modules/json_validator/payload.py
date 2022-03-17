@@ -1,24 +1,23 @@
-import json
-from os import path
-
 from flask import jsonify, request
 from werkzeug.exceptions import BadRequest
 
 from modules.json_validator.validator import validate_payload
+from request_schema import *  # noqa
 
 
-def validate_json(schema: str = None):
+def validate_json(file):
     def handler_decorator(handler):
         def inner():
+            from main_requests import logger
+
+            logger.debug(file.__name__)
+            schema = eval(f'file.{handler.__name__.upper()}')
             if schema is not None:
-                target_schema = path.abspath('request_schema/' + schema)
-                with open(target_schema, mode='r') as f:
-                    target_schema = json.loads(f.read())
 
                 payload = request.get_json()
 
                 try:
-                    validate_payload(payload=payload, schema=target_schema)
+                    validate_payload(payload=payload, schema=schema)
                 except AssertionError:
                     raise BadRequest(str(payload))
 

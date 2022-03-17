@@ -4,11 +4,12 @@ from werkzeug.exceptions import BadRequest
 
 from models import MoodDiary, User
 from modules.json_validator import validate_json
+from request_schema import mood_diary
 
 
 class MoodDiaryResource(Resource):
     @staticmethod
-    @validate_json('mood_diary/post.json')
+    @validate_json(mood_diary)
     def post(payload, token):
         from main_requests import session
 
